@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 
 WHITE = 0xFFFFFF
 YELLOW = 0xFFC91F
@@ -12,10 +13,10 @@ HEIGHT = 200
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 #двумерный массив для записи количества песчтнок в клетке
-sandpiles = [[0 for j in range(WIDTH)] for i in range(HEIGHT)]
+sandpiles = np.zeros((WIDTH, HEIGHT), dtype=np.uint32)
 
 #помещаем в центральную клетку много песчинок
-sandpiles[HEIGHT // 2][WIDTH // 2] = 3e4
+sandpiles[HEIGHT // 2][WIDTH // 2] = 3e6
 
 def color(cell):
     '''
@@ -37,6 +38,7 @@ def draw(screen, sandpiles):
     '''
     Последовательная отрисовка массива с песчинками
     '''
+    
     for i in range(HEIGHT):
         for j in range(WIDTH):
             pygame.draw.rect(screen, color(sandpiles[i][j]), [i, j, 1, 1])
@@ -46,6 +48,7 @@ def topple(sandpiles, i, j, num):
     '''
     Рассыпание песчинок по классическим правилам
     '''
+
     sandpiles[i][j] += num - 4
     if j - 1 >= 0:
         sandpiles[i][j - 1] += 1
@@ -67,7 +70,7 @@ while not finished:
     pygame.display.update()
 
     #создаём массив, в который будем записывать сотстояние после рассыпания; нужен для симметричного процесса отрисоки
-    nextsandpiles = [[0 for j in range(WIDTH)] for i in range(HEIGHT)]
+    nextsandpiles = np.zeros((WIDTH, HEIGHT), dtype=np.uint32)
 
     for i in range(HEIGHT):
         for j in range(WIDTH):
