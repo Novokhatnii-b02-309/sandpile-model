@@ -10,7 +10,8 @@ RED = 0xFF0000
 WIDTH = 200
 HEIGHT = 200
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED|pygame.RESIZABLE)
+
 
 #двумерный массив для записи количества песчтнок в клетке
 sandpiles = np.zeros((WIDTH, HEIGHT), dtype=np.uint32)
