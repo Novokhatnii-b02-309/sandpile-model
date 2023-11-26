@@ -1,4 +1,3 @@
-from tkinter import ttk
 from tkinter import *
 import time
 from tkinter.messagebox import *
@@ -42,8 +41,7 @@ def about():
     Эта программа моделирует поведение песчаной кучи. 
     Подробнее: https://ru.m.wikipedia.org/wiki/Модель_песчаной_кучи
     Программа создана учениками Б02-309 Артёмом Новохатним и Буторином Глебом'''
-    label = Label(win_about, width=70, height=10, bg="white",
-                fg='black', text=about_text)
+    label = Label(win_about, width=70, height=10, bg="white", fg='black', text=about_text)
     label.pack()
 
 
@@ -52,22 +50,21 @@ def help():
     win_help = Toplevel()
     win_help.resizable(width=False, height=False)
     win_help.title('Помощь')
-    label = Label(win_help, width=25, height=5, bg="white",
-                fg='black', text='Помощь')
+    label = Label(win_help, width=25, height=5, bg="white", fg='black', text='Помощь')
     # FIXME
     label.pack()
 
-'''
 def read_vars():
-    width_var.get()
-    height_var.get()
-'''
+    # print(width_entry.get())
+    # FIXME как указать на локальный объект (entry) у функции start_main_window()?
+    pass
 
 
 def start_simulation():
     global running_simulation
     running_simulation = True
-    #run_simulation()
+    read_vars()
+    # run_simulation()
 
 
 def end_simulation():
@@ -75,15 +72,33 @@ def end_simulation():
     running_simulation = False
 
 
+def save_pic():
+    pass
+    # FIXME
+
+
+def main_win_frame(x, y, width, height):
+    self = Frame(win, bg='white', borderwidth=1, relief=SOLID)
+    # убрал (, width=width, height=height)
+    #self.pack_propagate(False)
+    self.place(relx=x, rely=y, relwidth=width, relheight=height)
+    return(self)
+
+
 def start_main_window():
+
     '''Инициализация основного окна программы'''
     global win
-    #global canvas
+    # global canvas
+    global win_height
+    global win_width
+    win_width = 900
+    win_height = 660
 
     win = Tk()
     win.title('Sandpile model')
-    win.geometry('600x500')
-    win.maxsize(900, 600)
+    win.geometry(str(win_width)+'x'+ str(win_height)+'+'+'300+300')
+    win.resizable(False, False)
     win.configure(bg='white')
 
     m = Menu(win)
@@ -97,70 +112,94 @@ def start_main_window():
 
     m.add_command(label='О программе', command=about)
 
-    #canvas = Canvas(win, bg="white", width=WIDTH, height=HEIGHT)
-    #canvas.grid(row=0, columnspan=2)
-    #canvas.update()
+    # canvas = Canvas(win, bg="white", width=WIDTH, height=HEIGHT)
+    # canvas.grid(row=0, columnspan=2)
+    # canvas.update()
 
-    label_param = Label(win, text='Параметры', bg='white')
-    label_size = Label(win, text='Размеры', font=('Arial', 20), bg='white')
-    label_width = Label(win, text='Ширина:', bg='white')
-    label_height = Label(win, text='Высота:', bg='white')
-    label_sandpiles = Label(win, text='Начальное положение песчинок', bg='white')
-    label_type_model = Label(win, text='Тип модели:', bg='white')
-    label_show = Label(win, text='Показывать процесс распада:', bg='white')
-    label_colors = Label(win, text='Цвета:', bg='white')
-    #separator = ttk.Separator(win, orient='horizontal')
-    #separator.pack(side='left', fill='x')
+    frames_xywh_left = [(0, 0, 1/2, 1/11), (0, 1/11, 1/2, 1/11), (0, 2/11, 1/2, 1/11), (0, 3/11, 1/2, 1/11),
+                        (0, 4/11, 1/2, 4/11), (0, 8/11, 1/2, 1/11), (0, 9/11, 1/2, 1/11), (0, 10/11, 1/2, 1/11)]
+    frames_xywh_right = [(1/2, 0, 1/2, 1/11), (1/2, 1/11, 1/2, 1/11), (1/2, 2/11, 1/2, 5/11), (1/2, 7/11, 1/2, 1/11),
+                         (1/2, 8/11, 1/2, 3/11)]
 
-    width_var = StringVar()
-    width_entry = Entry(win, width=30, font='Ubuntu, 12', bd=3, textvariable=width_var)
-    height_var = StringVar()
-    height_entry = Entry(win, width=30, font='Ubuntu, 12', bd=3, textvariable=height_var)
+    frame_left = []
+
+    for i in range(len(frames_xywh_left)):
+        frame_left.append(main_win_frame(frames_xywh_left[i][0], frames_xywh_left[i][1],
+                                         frames_xywh_left[i][2], frames_xywh_left[i][3]))
+
+    frame_right = []
+
+    for i in range(len(frames_xywh_right)):
+        frame_right.append(main_win_frame(frames_xywh_right[i][0], frames_xywh_right[i][1],
+                                          frames_xywh_right[i][2], frames_xywh_right[i][3]))
+
+    label_param = Label(frame_left[0], text='Параметры', bg='white')
+    label_size = Label(frame_left[1], text='Размеры', bg='white')
+    label_width = Label(frame_left[2], text='Ширина:', bg='white')
+    label_height = Label(frame_left[3], text='Высота:', bg='white')
+    label_sandpiles = Label(frame_left[4], text='Начальное положение песчинок', bg='white')
+    label_type_model = Label(frame_left[5], text='Тип модели:', bg='white')
+    label_show = Label(frame_left[6], text='Показывать процесс распада:', bg='white')
+    label_colors = Label(frame_left[7], text='Цвета:', bg='white')
+
+    label_buttons = Label(frame_right[0], text='Симуляция', bg='white')
+    label_picture = Label(frame_right[2], text='Здесь должна быть картинка', bg='white')
+    label_output = Label(frame_right[4], text='Здесь должно быть поле вывода', bg='white')
+    # separator = ttk.Separator(win, orient='horizontal')
+    # separator.pack(side='left', fill='x')
+
+    width_entry = Entry(frame_left[2], width=30, font='Ubuntu, 12', bd=3)
+    height_entry = Entry(frame_left[3], width=30, font='Ubuntu, 12', bd=3)
+
+    sandpiles_entry = Text(frame_left[4], width=40, height=30, font='Ubuntu, 12', bd=3)
+    scroll = ttk.Scrollbar(frame_left[4], orient="vertical", command=sandpiles_entry.yview)
 
     type_var = StringVar()
     type_var.set('division_4')
-    btn_div_4 = Radiobutton(win, text='4-разделение', variable=type_var, value='division_4', bg='white')
-    btn_div_8 = Radiobutton(win, text='8-разделение', variable=type_var, value='division_8', bg='white')
+    btn_div_4 = Radiobutton(frame_left[5], text='4-разделение', variable=type_var, value='division_4', bg='white')
+    btn_div_8 = Radiobutton(frame_left[5], text='8-разделение', variable=type_var, value='division_8', bg='white')
 
     show_var = BooleanVar()
     show_var.set(True)
-    btn_show = Radiobutton(win, text='Да', variable=show_var, value=True, bg='white')
-    btn_not_show = Radiobutton(win, text='Нет', variable=show_var, value=False, bg='white')
+    btn_show = Radiobutton(frame_left[6], text='Да', variable=show_var, value=True, bg='white')
+    btn_not_show = Radiobutton(frame_left[6], text='Нет', variable=show_var, value=False, bg='white')
 
-    '''
-    frame_left = []
-    for i in range(9):
-        frame_left.append(ttk.Frame(borderwidth=1, relief=SOLID, padding=[1, 1, 1, 1]))
-        frame_left[i].grid(row=i, column=0)
-    '''
+    btn_start = Button(frame_right[1], text="Начать симуляцию", command=start_simulation)
+    btn_finish = Button(frame_right[1], text="Закончить симуляцию", command=end_simulation)
+    btn_save_pic = Button(frame_right[3], text="Сохранить картинку", command=save_pic)
 
-    label_param.grid(row=0, column=0)
-    label_size.grid(row=1, column=0)
-    label_width.grid(row=2, column=0)
-    label_height.grid(row=3, column=0)
-    label_sandpiles.grid(row=4, column=0)
-    #В пятой строке вводятся песчинки
-    label_type_model.grid(row=6, column=0)
-    label_show.grid(row=7, column=0)
-    label_colors.grid(row=8, column=0)
+    label_param.pack()
+    label_size.pack()
+    label_width.pack()
+    label_height.pack()
+    label_sandpiles.pack()
+    # В пятой строке вводятся песчинки
+    label_type_model.pack()
+    label_show.pack()
+    label_colors.pack()
 
-    width_entry.grid(row=2, column=1)
-    height_entry.grid(row=3, column=1)
+    label_buttons.pack()
+    label_picture.pack()
+    label_output.pack()
 
-    btn_div_4.grid(row=6, column=1)
-    btn_div_8.grid(row=6, column=2)
+    width_entry.pack()
+    height_entry.pack()
 
-    btn_show.grid(row=7, column=1)
-    btn_not_show.grid(row=7, column=2)
+    sandpiles_entry.pack(side=LEFT, padx=10)
+    scroll.pack(side=LEFT, fill=Y)
 
+    sandpiles_entry.config(yscrollcommand=scroll.set)
 
-    '''
-    button_start = Button(win, text="Начать симуляцию", command=start_simulation)
-    button_finish = Button(win, text="Закончить симуляцию", command=end_simulation)
+    btn_div_4.pack()
+    btn_div_8.pack()
 
-    button_start.grid(row=1, column=1, padx=10, pady=5,)
-    button_finish.grid(row=1, column=2, padx=1, pady=1)
-    '''
+    btn_start.pack()
+    btn_finish.pack()
+    btn_save_pic.pack()
+
+    btn_show.pack()
+    btn_not_show.pack()
+
     win.mainloop()
 
 
