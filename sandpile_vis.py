@@ -1,9 +1,10 @@
 from tkinter import *
 import time
 from tkinter.messagebox import *
-from sandpile_constants import *
 from tkinter import ttk
 
+from sandpile_constants import *
+import sand_model
 
 def size_options():
     '''Настройки размеров для симуляции'''
@@ -64,7 +65,7 @@ def start_simulation():
     global running_simulation
     running_simulation = True
     read_vars()
-    # run_simulation()
+    sand_model.simulation()
 
 
 def end_simulation():
@@ -77,7 +78,7 @@ def save_pic():
     # FIXME
 
 
-def main_win_frame(x, y, width, height):
+def main_win_frame(win, x, y, width, height):
     self = Frame(win, bg='white', borderwidth=1, relief=SOLID)
     # убрал (, width=width, height=height)
     #self.pack_propagate(False)
@@ -85,17 +86,14 @@ def main_win_frame(x, y, width, height):
     return(self)
 
 
-def start_main_window():
-
+def start_main_window(win):
     '''Инициализация основного окна программы'''
-    global win
     # global canvas
     global win_height
     global win_width
     win_width = 900
     win_height = 660
 
-    win = Tk()
     win.title('Sandpile model')
     win.geometry(str(win_width)+'x'+ str(win_height)+'+'+'300+300')
     win.resizable(False, False)
@@ -124,13 +122,13 @@ def start_main_window():
     frame_left = []
 
     for i in range(len(frames_xywh_left)):
-        frame_left.append(main_win_frame(frames_xywh_left[i][0], frames_xywh_left[i][1],
+        frame_left.append(main_win_frame(win, frames_xywh_left[i][0], frames_xywh_left[i][1],
                                          frames_xywh_left[i][2], frames_xywh_left[i][3]))
 
     frame_right = []
 
     for i in range(len(frames_xywh_right)):
-        frame_right.append(main_win_frame(frames_xywh_right[i][0], frames_xywh_right[i][1],
+        frame_right.append(main_win_frame(win, frames_xywh_right[i][0], frames_xywh_right[i][1],
                                           frames_xywh_right[i][2], frames_xywh_right[i][3]))
 
     label_param = Label(frame_left[0], text='Параметры', bg='white')
@@ -200,7 +198,5 @@ def start_main_window():
     btn_show.pack()
     btn_not_show.pack()
 
-    win.mainloop()
 
-
-start_main_window()
+# start_main_window()
