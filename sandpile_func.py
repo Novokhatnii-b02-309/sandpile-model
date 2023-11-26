@@ -17,15 +17,16 @@ def color(cell):
         return RED
 
 
-def draw(canvas, sandpiles):
+def draw(screen, sandpiles):
     '''
     Последовательная отрисовка массива с песчинками
     '''
 
     for i in range(HEIGHT):
         for j in range(WIDTH):
-            canvas.create_rectangle(j, i, (j+1), (i+1), fill=color(sandpiles[i][j]), outline='')
-    canvas.update()
+            # canvas.create_rectangle(j, i, (j+1), (i+1), fill=color(sandpiles[i][j]), outline='')
+            screen.set_at((j, i), color(sandpiles[i][j]))
+    # canvas.update()
 
 
 def topple(sandpiles, i, j, num):
