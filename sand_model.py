@@ -12,7 +12,7 @@ def simulation():
     sandpiles = np.zeros((WIDTH, HEIGHT), dtype=np.uint32)
 
     #помещаем в центральную клетку много песчинок
-    sandpiles[HEIGHT // 2][WIDTH // 2] = 3e6
+    sandpiles[HEIGHT // 2][WIDTH // 2] = 3e4
 
     finished = False
 
@@ -29,10 +29,10 @@ def simulation():
         for i in range(HEIGHT):
             for j in range(WIDTH):
                 num = sandpiles[i][j]
-                if num <= 3:
+                if num <= 7:
                     nextsandpiles[i][j] += num
                 else:
-                    nextsandpiles = topple(nextsandpiles, i, j, num)
+                    nextsandpiles = topple_neumann(nextsandpiles, i, j, num)
 
         sandpiles = nextsandpiles
 

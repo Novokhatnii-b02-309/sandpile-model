@@ -44,3 +44,17 @@ def topple(sandpiles, i, j, num):
     if i + 1 <= HEIGHT - 1:
         sandpiles[i + 1][j] += 1
     return sandpiles
+
+def topple_neumann(sandpiles, i, j, num):
+    '''
+    Рассыпание песчинок по окрестности фон Неймана
+    '''
+
+    sandpiles[i][j] += num - 8
+    for s in range(-1, 2):
+        for t in range(-1, 2):
+            if s == 0 and t == 0:
+                continue
+            else:
+                sandpiles[i + s][j+ t] += 1
+    return sandpiles
