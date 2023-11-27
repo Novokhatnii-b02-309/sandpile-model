@@ -30,6 +30,8 @@ def size_options():
     label.pack()
     button.pack()
 
+def set_topple(value):
+    simulation_prop.change_topple(value)
 
 def about():
     '''Вывод информации о программе в отдельном окне'''
@@ -63,7 +65,7 @@ def start_simulation():
     global running_simulation
     running_simulation = True
     read_vars()
-    sand_model.simulation(simulation_prop.width, simulation_prop.height)
+    sand_model.simulation(simulation_prop.width, simulation_prop.height, simulation_prop.how_topple)
 
 
 def end_simulation():
@@ -152,10 +154,11 @@ def start_main_window(win):
     sandpiles_entry = Text(frame_left[4], width=40, height=30, font='Ubuntu, 12', bd=3)
     scroll = ttk.Scrollbar(frame_left[4], orient="vertical", command=sandpiles_entry.yview)
 
+    # FIXME
     type_var = StringVar()
     type_var.set('division_4')
-    btn_div_4 = Radiobutton(frame_left[5], text='4-разделение', variable=type_var, value='division_4', bg='white')
-    btn_div_8 = Radiobutton(frame_left[5], text='8-разделение', variable=type_var, value='division_8', bg='white')
+    btn_div_4 = Radiobutton(frame_left[5], text='4-разделение', variable=type_var, value='division_4', command=set_topple(1), bg='white')
+    btn_div_8 = Radiobutton(frame_left[5], text='8-разделение', variable=type_var, value='division_8', command=set_topple(2), bg='white')
 
     show_var = BooleanVar()
     show_var.set(True)
@@ -197,6 +200,8 @@ def start_main_window(win):
 
     btn_show.pack()
     btn_not_show.pack()
+
+    win.mainloop()
 
 
 # start_main_window()

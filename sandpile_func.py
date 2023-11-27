@@ -4,7 +4,7 @@ class Properties:
     '''
     Класс для хранения информации об окне симуляции
     '''
-    
+
     def __init__(self):
         self.width = WIDTH
         self.height = HEIGHT
@@ -75,3 +75,9 @@ def topple_neumann(sandpiles, i, j, num):
             else:
                 sandpiles[i + s][j+ t] += 1
     return sandpiles
+
+def set_topple_function(sandpiles, i, j, num, value):
+    if value == 1:
+        return topple(sandpiles, i, j, num)
+    elif value == 2:
+        return topple_neumann(sandpiles, i, j, num)

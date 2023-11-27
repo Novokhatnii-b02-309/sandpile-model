@@ -4,9 +4,8 @@ import numpy as np
 from sandpile_func import *
 from sandpile_constants import *
 
-def simulation(simulation_width, simulation_height):
+def simulation(simulation_width, simulation_height, topple_type):
     screen = pygame.display.set_mode((simulation_width, simulation_height), pygame.SCALED|pygame.RESIZABLE)
-
 
     #двумерный массив для записи количества песчтнок в клетке
     sandpiles = np.zeros((simulation_width, simulation_height), dtype=np.uint32)
@@ -15,6 +14,11 @@ def simulation(simulation_width, simulation_height):
     sandpiles[simulation_height // 2][simulation_width // 2] = 3e4
 
     finished = False
+
+    if topple_type == 1:
+        N = 4 # количество песчинок, при котором происходит обвал
+    elif topple_type == 2:
+        N = 8
 
     screen.fill(WHITE)
 
@@ -29,10 +33,10 @@ def simulation(simulation_width, simulation_height):
         for i in range(simulation_height):
             for j in range(simulation_width):
                 num = sandpiles[i][j]
-                if num <= 7:
+                if num < N:
                     nextsandpiles[i][j] += num
                 else:
-                    nextsandpiles = topple_neumann(nextsandpiles, i, j, num)
+                    set_topple_function(nextsandpiles, i, j, num, topple_type)
 
         sandpiles = nextsandpiles
 
