@@ -1,5 +1,22 @@
 from sandpile_constants import *
 
+class Properties:
+    '''
+    Класс для хранения информации об окне симуляции
+    '''
+    
+    def __init__(self):
+        self.width = WIDTH
+        self.height = HEIGHT
+        self.how_topple = 1 # 1 - для клссичсекого рассыпания, 2 - для рассыпания по фон Нейману
+
+    def change_size(self, new_width, new_height):
+        self.width = new_width
+        self.height = new_height
+
+    def change_topple(self, value):
+        self.how_topple = value
+
 def color(cell):
     '''
     В зависимости от количесива песчинок возвращает цвет клетки
@@ -17,13 +34,13 @@ def color(cell):
         return RED
 
 
-def draw(screen, sandpiles):
+def draw(screen, sandpiles, width, height):
     '''
     Последовательная отрисовка массива с песчинками
     '''
 
-    for i in range(HEIGHT):
-        for j in range(WIDTH):
+    for i in range(height):
+        for j in range(width):
             # canvas.create_rectangle(j, i, (j+1), (i+1), fill=color(sandpiles[i][j]), outline='')
             screen.set_at((j, i), color(sandpiles[i][j]))
     # canvas.update()

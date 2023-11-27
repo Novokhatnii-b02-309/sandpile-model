@@ -5,6 +5,7 @@ from tkinter import ttk
 
 from sandpile_constants import *
 import sand_model
+import sandpile_func
 
 def size_options():
     '''Настройки размеров для симуляции'''
@@ -13,13 +14,10 @@ def size_options():
     win_options.title('Настройки размеров')
 
     def def_size():
-        global WIDTH
-        global HEIGHT
         value = entry.get()
         value = value.split(', ')
         value = list(map(int, value))
-        WIDTH = value[0]
-        HEIGHT = value[1]
+        simulation_prop.change_size(value[0], value[1])
 
     var = StringVar()
     entry = Entry(win_options, width=30, font='Ubuntu, 12', bd=3, relief=SUNKEN, textvariable=var)
@@ -65,7 +63,7 @@ def start_simulation():
     global running_simulation
     running_simulation = True
     read_vars()
-    sand_model.simulation()
+    sand_model.simulation(simulation_prop.width, simulation_prop.height)
 
 
 def end_simulation():
@@ -91,8 +89,10 @@ def start_main_window(win):
     # global canvas
     global win_height
     global win_width
+    global simulation_prop # класс, в котором будет храниться информация об окне симуляции
     win_width = 900
     win_height = 660
+    simulation_prop = sandpile_func.Properties()
 
     win.title('Sandpile model')
     win.geometry(str(win_width)+'x'+ str(win_height)+'+'+'300+300')
