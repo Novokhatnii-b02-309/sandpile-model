@@ -6,6 +6,7 @@ from sandpile_constants import *
 
 def simulation(simulation_width, simulation_height, topple_type):
     screen = pygame.display.set_mode((simulation_width, simulation_height), pygame.SCALED|pygame.RESIZABLE)
+    print(pygame.SCALED)
 
     #двумерный массив для записи количества песчтнок в клетке
     sandpiles = np.zeros((simulation_width, simulation_height), dtype=np.uint32)
@@ -23,7 +24,7 @@ def simulation(simulation_width, simulation_height, topple_type):
     screen.fill(WHITE)
 
     while not finished:
-        draw(screen, sandpiles, simulation_width, simulation_height)
+        draw(screen, sandpiles, simulation_width, simulation_height, topple_type)
 
         pygame.display.update()
 
@@ -43,4 +44,8 @@ def simulation(simulation_width, simulation_height, topple_type):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 finished = True
+            if event.type == pygame.MOUSEBUTTONUP:
+                x, y = pygame.mouse.get_pos()
+                put_sand(sandpiles, x, y, 1e3)
+                print(x, y)
     pygame.quit()

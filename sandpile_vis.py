@@ -154,7 +154,6 @@ def start_main_window(win):
     sandpiles_entry = Text(frame_left[4], width=40, height=30, font='Ubuntu, 12', bd=3)
     scroll = ttk.Scrollbar(frame_left[4], orient="vertical", command=sandpiles_entry.yview)
 
-    # FIXME
     type_var = StringVar()
     type_var.set('division_4')
     cmd = lambda x=1: set_topple(x)

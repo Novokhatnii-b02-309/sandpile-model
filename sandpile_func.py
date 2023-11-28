@@ -17,7 +17,7 @@ class Properties:
     def change_topple(self, value):
         self.how_topple = value
 
-def color(cell):
+def color(cell, value):
     '''
     В зависимости от количесива песчинок возвращает цвет клетки
     '''
@@ -31,10 +31,22 @@ def color(cell):
     elif cell == 3:
         return YELLOW
     else:
-        return RED
+        if value == 1:
+            return RED
+        elif value == 2:
+            if cell == 4:
+                return BLUE
+            elif cell == 5:
+                return CYAN
+            elif cell == 6:
+                return MAGENTA
+            elif cell == 7:
+                return ORANGE
+            else:
+                return RED
 
 
-def draw(screen, sandpiles, width, height):
+def draw(screen, sandpiles, width, height, value):
     '''
     Последовательная отрисовка массива с песчинками
     '''
@@ -42,7 +54,7 @@ def draw(screen, sandpiles, width, height):
     for i in range(height):
         for j in range(width):
             # canvas.create_rectangle(j, i, (j+1), (i+1), fill=color(sandpiles[i][j]), outline='')
-            screen.set_at((j, i), color(sandpiles[i][j]))
+            screen.set_at((j, i), color(sandpiles[i][j], value))
     # canvas.update()
 
 
@@ -77,7 +89,19 @@ def topple_neumann(sandpiles, i, j, num):
     return sandpiles
 
 def set_topple_function(sandpiles, i, j, num, value):
+    '''
+    По значению value определяет какой тип рассыпания должен быть в симуляции
+    '''
+
     if value == 1:
         return topple(sandpiles, i, j, num)
     elif value == 2:
         return topple_neumann(sandpiles, i, j, num)
+
+def put_sand(sandpiles, x, y, amount):
+    '''
+    Добавляет в клетку (x, y) amount песчинок
+    '''
+
+    sandpiles[y][x] += amount
+    return sandpiles
