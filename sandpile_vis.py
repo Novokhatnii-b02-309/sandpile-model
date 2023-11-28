@@ -30,8 +30,14 @@ def size_options():
     label.pack()
     button.pack()
 
+
 def set_topple(value):
     simulation_prop.change_topple(value)
+
+
+def size_topple(w,h):
+    simulation_prop.change_size(w, h)
+
 
 def about():
     '''Вывод информации о программе в отдельном окне'''
@@ -55,31 +61,12 @@ def help():
     # FIXME
     label.pack()
 
-def read_vars():
-    # print(width_entry.get())
-    # FIXME как указать на локальный объект (entry) у функции start_main_window()?
-    pass
 
-
-def start_simulation():
-    global running_simulation
-    running_simulation = True
-    read_vars()
-    sand_model.simulation(simulation_prop.width, simulation_prop.height, simulation_prop.how_topple)
-
-
-def end_simulation():
-    global running_simulation
-    running_simulation = False
-
-
-def save_pic():
-    pass
-    # FIXME
 
 
 def main_win_frame(win, x, y, width, height):
-    self = Frame(win, bg='white', borderwidth=1, relief=SOLID)
+    '''Создаёт ячейку для виджета в главном окне'''
+    self = Frame(win, bg='white', relief=SOLID, highlightbackground='gray', highlightthickness=1)
     # убрал (, width=width, height=height)
     #self.pack_propagate(False)
     self.place(relx=x, rely=y, relwidth=width, relheight=height)
@@ -88,7 +75,29 @@ def main_win_frame(win, x, y, width, height):
 
 def start_main_window(win):
     '''Инициализация основного окна программы'''
-    # global canvas
+
+    def read_vars():
+        '''Данная функция считывает переменные из строк и кнопок и устанавливает параметры симуляции'''
+
+        size_topple(int(width_entry.get()), int(height_entry.get()))
+        set_topple(type_var.get())
+        # FIXME как указать на локальный объект (entry) у функции start_main_window()?
+        pass
+
+    def start_simulation():
+        global running_simulation
+        running_simulation = True
+        read_vars()
+        sand_model.simulation(simulation_prop.width, simulation_prop.height, simulation_prop.how_topple)
+
+    def end_simulation():
+        global running_simulation
+        running_simulation = False
+
+    def save_pic():
+        pass
+        # FIXME
+
     global win_height
     global win_width
     global simulation_prop # класс, в котором будет храниться информация об окне симуляции
@@ -112,15 +121,12 @@ def start_main_window(win):
 
     m.add_command(label='О программе', command=about)
 
-    # canvas = Canvas(win, bg="white", width=WIDTH, height=HEIGHT)
-    # canvas.grid(row=0, columnspan=2)
-    # canvas.update()
-
     frames_xywh_left = [(0, 0, 1/2, 1/11), (0, 1/11, 1/2, 1/11), (0, 2/11, 1/2, 1/11), (0, 3/11, 1/2, 1/11),
                         (0, 4/11, 1/2, 4/11), (0, 8/11, 1/2, 1/11), (0, 9/11, 1/2, 1/11), (0, 10/11, 1/2, 1/11)]
     frames_xywh_right = [(1/2, 0, 1/2, 1/11), (1/2, 1/11, 1/2, 1/11), (1/2, 2/11, 1/2, 5/11), (1/2, 7/11, 1/2, 1/11),
                          (1/2, 8/11, 1/2, 3/11)]
 
+    #Делим экран на части справа и слева
     frame_left = []
 
     for i in range(len(frames_xywh_left)):
@@ -133,6 +139,7 @@ def start_main_window(win):
         frame_right.append(main_win_frame(win, frames_xywh_right[i][0], frames_xywh_right[i][1],
                                           frames_xywh_right[i][2], frames_xywh_right[i][3]))
 
+    #Виджеты текста слева
     label_param = Label(frame_left[0], text='Параметры', bg='white')
     label_size = Label(frame_left[1], text='Размеры', bg='white')
     label_width = Label(frame_left[2], text='Ширина:', bg='white')
@@ -142,34 +149,40 @@ def start_main_window(win):
     label_show = Label(frame_left[6], text='Показывать процесс распада:', bg='white')
     label_colors = Label(frame_left[7], text='Цвета:', bg='white')
 
+    #Виджеты текста справа
     label_buttons = Label(frame_right[0], text='Симуляция', bg='white')
     label_picture = Label(frame_right[2], text='Здесь должна быть картинка', bg='white')
     label_output = Label(frame_right[4], text='Здесь должно быть поле вывода', bg='white')
     # separator = ttk.Separator(win, orient='horizontal')
     # separator.pack(side='left', fill='x')
 
+    #Поля ввода длины, ширины и начального положения песчинок
     width_entry = Entry(frame_left[2], width=30, font='Ubuntu, 12', bd=3)
+    width_entry.insert(0, WIDTH)
     height_entry = Entry(frame_left[3], width=30, font='Ubuntu, 12', bd=3)
+    height_entry.insert(0, HEIGHT)
 
     sandpiles_entry = Text(frame_left[4], width=40, height=30, font='Ubuntu, 12', bd=3)
     scroll = ttk.Scrollbar(frame_left[4], orient="vertical", command=sandpiles_entry.yview)
 
-    type_var = StringVar()
-    type_var.set('division_4')
-    cmd = lambda x=1: set_topple(x)
-    btn_div_4 = Radiobutton(frame_left[5], text='4-разделение', variable=type_var, value='division_4', command=cmd, bg='white')
-    cmd = lambda x=2: set_topple(x)
-    btn_div_8 = Radiobutton(frame_left[5], text='8-разделение', variable=type_var, value='division_8', command=cmd, bg='white')
+    #Выбор типа разделения
+    type_var = IntVar()
+    type_var.set(1)
+    btn_div_4 = Radiobutton(frame_left[5], text='4-разделение', variable=type_var, value=1, bg='white')
+    btn_div_8 = Radiobutton(frame_left[5], text='8-разделение', variable=type_var, value=2, bg='white')
 
+    #Выбор показывать/не показывать шаги симуляции
     show_var = BooleanVar()
     show_var.set(True)
     btn_show = Radiobutton(frame_left[6], text='Да', variable=show_var, value=True, bg='white')
     btn_not_show = Radiobutton(frame_left[6], text='Нет', variable=show_var, value=False, bg='white')
 
+    #Кнопки начать, закончить, сохранить
     btn_start = Button(frame_right[1], text="Начать симуляцию", command=start_simulation)
     btn_finish = Button(frame_right[1], text="Закончить симуляцию", command=end_simulation)
     btn_save_pic = Button(frame_right[3], text="Сохранить картинку", command=save_pic)
 
+    # Пакуем виджеты на экране
     label_param.pack()
     label_size.pack()
     label_width.pack()
