@@ -157,8 +157,10 @@ def start_main_window(win):
     # FIXME
     type_var = StringVar()
     type_var.set('division_4')
-    btn_div_4 = Radiobutton(frame_left[5], text='4-разделение', variable=type_var, value='division_4', command=set_topple(1), bg='white')
-    btn_div_8 = Radiobutton(frame_left[5], text='8-разделение', variable=type_var, value='division_8', command=set_topple(2), bg='white')
+    cmd = lambda x=1: set_topple(x)
+    btn_div_4 = Radiobutton(frame_left[5], text='4-разделение', variable=type_var, value='division_4', command=cmd, bg='white')
+    cmd = lambda x=2: set_topple(x)
+    btn_div_8 = Radiobutton(frame_left[5], text='8-разделение', variable=type_var, value='division_8', command=cmd, bg='white')
 
     show_var = BooleanVar()
     show_var.set(True)
