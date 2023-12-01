@@ -11,7 +11,7 @@ class Properties:
         self.width = WIDTH
         self.height = HEIGHT
         self.how_topple = 1 # 1 - для клссичсекого рассыпания, 2 - для рассыпания по фон Нейману
-        self.sandpiles = np.zeros((WIDTH, HEIGHT), dtype=np.uint32)
+        self.sandpiles = np.zeros((self.height, self.width), dtype=np.uint32)
 
     def change_size(self, new_width, new_height):
         self.width = new_width
@@ -30,7 +30,7 @@ def sandpiles_to_np(sandpiles, width, height):
     На вход берёт поле текста с песчинками, введёнными в формате ('x','y','количество песчинок в клетке')
     возвращает поле np.array с песчинками
     '''
-    print(sandpiles)
+
     sandpiles = sandpiles.split('\n')
     for i in range(len(sandpiles)-1, -1, -1):
         if sandpiles[i] == '':
@@ -39,7 +39,7 @@ def sandpiles_to_np(sandpiles, width, height):
         sandpiles[i] = sandpiles[i].split(',')
         sandpiles[i] = list(map(int, sandpiles[i]))
 
-    new_sandpiles = np.zeros((width, height), dtype=np.uint32)
+    new_sandpiles = np.zeros((height, width), dtype=np.uint32)
     for sand in sandpiles:
         new_sandpiles[sand[1]][sand[0]] = sand[2]
     return(new_sandpiles)
