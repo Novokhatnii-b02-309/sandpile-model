@@ -2,6 +2,7 @@ from tkinter import *
 import time
 from tkinter.messagebox import *
 from tkinter import ttk
+from PIL import ImageTk, Image
 
 from sandpile_constants import *
 import sand_model
@@ -57,9 +58,12 @@ def help():
 
 def main_win_frame(win, x, y, width, height):
     '''Создаёт ячейку для виджета в главном окне'''
-    self = Frame(win, bg='white', relief=SOLID, highlightbackground='gray', highlightthickness=1)
+    global win_height
+    global win_width
+    self = Frame(win, bg='white', relief=SOLID, highlightbackground='gray', highlightthickness=1,
+                 width=width*win_width, height=height*win_height)
     # убрал (, width=width, height=height)
-    #self.pack_propagate(False)
+    self.grid_propagate(False)
     self.place(relx=x, rely=y, relwidth=width, relheight=height)
     return(self)
 
@@ -97,7 +101,7 @@ def start_main_window(win):
     global win_width
     global simulation_prop # класс, в котором будет храниться информация об окне симуляции
     win_width = 900
-    win_height = 660
+    win_height = 720
     simulation_prop = sandpile_func.Properties()
 
     win.title('Sandpile model')
@@ -116,10 +120,13 @@ def start_main_window(win):
 
     m.add_command(label='О программе', command=about)
 
-    frames_xywh_left = [(0, 0, 1/2, 1/11), (0, 1/11, 1/2, 1/11), (0, 2/11, 1/2, 1/11), (0, 3/11, 1/2, 1/11),
-                        (0, 4/11, 1/2, 4/11), (0, 8/11, 1/2, 1/11), (0, 9/11, 1/2, 1/11), (0, 10/11, 1/2, 1/11)]
-    frames_xywh_right = [(1/2, 0, 1/2, 1/11), (1/2, 1/11, 1/2, 1/11), (1/2, 2/11, 1/2, 5/11), (1/2, 7/11, 1/2, 1/11),
-                         (1/2, 8/11, 1/2, 3/11)]
+    frame_top = main_win_frame(win, 0, 0, 1, 2/12)
+    frame_top.configure(bg='yellow')
+
+    frames_xywh_left = [(0, 2/12, 1/2, 1/12), (0, 3/12, 1/2, 1/12), (0, 4/12, 1/2, 1/12),
+                        (0, 5/12, 1/2, 4/12), (0, 9/12, 1/2, 1/12), (0, 10/12, 1/2, 1/12), (0, 11/12, 1/2, 1/12)]
+    frames_xywh_right = [(1/2, 2/12, 1/2, 1/12), (1/2, 3/12, 1/2, 5/12), (1/2, 8/12, 1/2, 1/12),
+                         (1/2, 9/12, 1/2, 3/12)]
 
     #Делим экран на части справа и слева
     frame_left = []
@@ -134,53 +141,77 @@ def start_main_window(win):
         frame_right.append(main_win_frame(win, frames_xywh_right[i][0], frames_xywh_right[i][1],
                                           frames_xywh_right[i][2], frames_xywh_right[i][3]))
 
+    # Заголовок
+    label_title = Label(frame_top, text='Модель песчаной кучи', bg='yellow',
+                        foreground='black', font=('TkHeadingFont', 26))
+    img = ImageTk.PhotoImage(Image.open("title_image.png"))
+    panel = Label(frame_top, image=img, bg='yellow')
+
+
+
+
     #Виджеты текста слева
-    label_param = Label(frame_left[0], text='Параметры', bg='white')
-    label_size = Label(frame_left[1], text='Размеры', bg='white')
-    label_width = Label(frame_left[2], text='Ширина:', bg='white')
-    label_height = Label(frame_left[3], text='Высота:', bg='white')
-    label_sandpiles = Label(frame_left[4], text='Начальное положение песчинок', bg='white')
-    label_type_model = Label(frame_left[5], text='Тип модели:', bg='white')
-    label_show = Label(frame_left[6], text='Показывать процесс распада:', bg='white')
-    label_colors = Label(frame_left[7], text='Цвета:', bg='white')
+    label_param = Label(frame_left[0], text='Параметры', bg='white', font=('TkHeadingFont', 15))
+    label_width = Label(frame_left[1], text='Ширина:', bg='white')
+    label_height = Label(frame_left[2], text='Высота:', bg='white')
+    label_sandpiles = Label(frame_left[3], text='Начальное положение песчинок', bg='white')
+    label_type_model = Label(frame_left[4], text='Тип модели:', bg='white')
+    label_show = Label(frame_left[5], text='Показывать процесс распада:', bg='white')
+    label_colors = Label(frame_left[6], text='Цвета:', bg='white')
 
     # Виджеты текста справа
-    label_buttons = Label(frame_right[0], text='Симуляция', bg='white')
-    label_picture = Label(frame_right[2], text='Здесь должна быть картинка', bg='white')
-    label_output = Label(frame_right[4], text='Здесь должно быть поле вывода', bg='white')
+    #label_buttons = Label(frame_right[0], text='Симуляция', bg='white')
+    label_picture = Label(frame_right[1], text='Здесь должна быть картинка', bg='white')
+    label_output = Label(frame_right[3], text='Здесь должно быть поле вывода', bg='white')
     # separator = ttk.Separator(win, orient='horizontal')
     # separator.pack(side='left', fill='x')
 
     # Поля ввода длины, ширины и начального положения песчинок
-    width_entry = Entry(frame_left[2], width=30, font='Ubuntu, 12', bd=3)
+    width_entry = Entry(frame_left[1], width=30, font='Ubuntu, 12', bd=3)
     width_entry.insert(0, WIDTH)
-    height_entry = Entry(frame_left[3], width=30, font='Ubuntu, 12', bd=3)
+    height_entry = Entry(frame_left[2], width=30, font='Ubuntu, 12', bd=3)
     height_entry.insert(0, HEIGHT)
 
-    sandpiles_entry = Text(frame_left[4], width=40, height=30, font='Ubuntu, 12', bd=3)
+    sandpiles_entry = Text(frame_left[3], width=40, height=30, font='Ubuntu, 12', bd=3)
     sandpiles_entry.insert(1.0, str(WIDTH//2)+','+str(HEIGHT//2)+','+str(SANDPILES))
-    scroll = ttk.Scrollbar(frame_left[4], orient="vertical", command=sandpiles_entry.yview)
+    scroll = ttk.Scrollbar(frame_left[3], orient="vertical", command=sandpiles_entry.yview)
 
     # Выбор типа разделения
     type_var = IntVar()
     type_var.set(1)
-    btn_div_4 = Radiobutton(frame_left[5], text='4-разделение', variable=type_var, value=1, bg='white')
-    btn_div_8 = Radiobutton(frame_left[5], text='8-разделение', variable=type_var, value=2, bg='white')
+    btn_div_4 = Radiobutton(frame_left[4], text='4-разделение', variable=type_var, value=1, bg='white')
+    btn_div_8 = Radiobutton(frame_left[4], text='8-разделение', variable=type_var, value=2, bg='white')
 
     # Выбор показывать/не показывать шаги симуляции
     show_var = BooleanVar()
     show_var.set(True)
-    btn_show = Radiobutton(frame_left[6], text='Да', variable=show_var, value=True, bg='white')
-    btn_not_show = Radiobutton(frame_left[6], text='Нет', variable=show_var, value=False, bg='white')
+    btn_show = Radiobutton(frame_left[5], text='Да', variable=show_var, value=True, bg='white')
+    btn_not_show = Radiobutton(frame_left[5], text='Нет', variable=show_var, value=False, bg='white')
+
+    '''
+    # Выбор цветов
+    color_var = StringVar()
+    color_var.set('colorful')
+    btn_colorful = Radiobutton(frame_left[6], text='Разноцветный', variable=color_var, value='colorful', bg='white')
+    btn_red = Radiobutton(frame_left[6], text='Красный', variable=color_var, value='red', bg='white')
+    btn_green = Radiobutton(frame_left[6], text='Зелёный', variable=color_var, value='green', bg='white')
+    btn_blue = Radiobutton(frame_left[6], text='Жёлтый', variable=color_var, value='blue', bg='white')
+    '''
 
     # Кнопки начать, закончить, сохранить
-    btn_start = Button(frame_right[1], text="Начать симуляцию", command=start_simulation)
-    btn_finish = Button(frame_right[1], text="Закончить симуляцию", command=end_simulation)
-    btn_save_pic = Button(frame_right[3], text="Сохранить картинку", command=save_pic)
+    btn_start = Button(frame_right[0], text="Начать симуляцию", command=start_simulation,
+                       foreground='darkgreen', font=('TkTooltipFont', 11))
+    btn_finish = Button(frame_right[0], text="Закончить симуляцию", command=end_simulation,
+                        foreground='red', font=('TkTooltipFont', 11))
+    btn_save_pic = Button(frame_right[2], text="Сохранить картинку", command=save_pic)
 
     # Пакуем виджеты на экране
+    label_title.place(relx=0.2, rely=0.25)
+    panel.place(relx=0.7, rely=0.1)
+
+
     label_param.pack()
-    label_size.pack()
+    #label_size.pack()
     label_width.pack()
     label_height.pack()
     label_sandpiles.pack()
@@ -189,7 +220,7 @@ def start_main_window(win):
     label_show.pack()
     label_colors.pack()
 
-    label_buttons.pack()
+    #label_buttons.pack()
     label_picture.pack()
     label_output.pack()
 
@@ -201,15 +232,15 @@ def start_main_window(win):
 
     sandpiles_entry.config(yscrollcommand=scroll.set)
 
-    btn_div_4.pack()
-    btn_div_8.pack()
+    btn_div_4.place(relx=0.2, rely=0.3)
+    btn_div_8.place(relx=0.55, rely=0.3)
 
-    btn_start.pack()
-    btn_finish.pack()
+    btn_start.place(relx=0.05, rely=0.1, relwidth=0.4, relheight=0.8)
+    btn_finish.place(relx=0.55, rely=0.1, relwidth=0.4, relheight=0.8)
     btn_save_pic.pack()
 
-    btn_show.pack()
-    btn_not_show.pack()
+    btn_show.place(relx=0.2, rely=0.3)
+    btn_not_show.place(relx=0.55, rely=0.3)
 
     win.mainloop()
 
