@@ -1,4 +1,6 @@
 from sandpile_constants import *
+import numpy as np
+
 
 class Properties:
     '''
@@ -9,6 +11,7 @@ class Properties:
         self.width = WIDTH
         self.height = HEIGHT
         self.how_topple = 1 # 1 - для клссичсекого рассыпания, 2 - для рассыпания по фон Нейману
+        self.sandpiles = np.zeros((WIDTH, HEIGHT), dtype=np.uint32)
 
     def change_size(self, new_width, new_height):
         self.width = new_width
@@ -16,6 +19,31 @@ class Properties:
 
     def change_topple(self, value):
         self.how_topple = value
+
+    def change_sandpiles(self, new_sandpiles):
+        self.sandpiles = new_sandpiles
+
+
+def sandpiles_to_np(sandpiles, width, height):
+    '''
+    Переводит поле текста в np.array - поле размера width x height с песчинками
+    На вход берёт поле текста с песчинками, введёнными в формате ('x','y','количество песчинок в клетке')
+    возвращает поле np.array с песчинками
+    '''
+    print(sandpiles)
+    sandpiles = sandpiles.split('\n')
+    for i in range(len(sandpiles)-1, -1, -1):
+        if sandpiles[i] == '':
+            sandpiles.pop(i)
+            continue
+        sandpiles[i] = sandpiles[i].split(',')
+        sandpiles[i] = list(map(int, sandpiles[i]))
+
+    new_sandpiles = np.zeros((width, height), dtype=np.uint32)
+    for sand in sandpiles:
+        new_sandpiles[sand[1]][sand[0]] = sand[2]
+    return(new_sandpiles)
+
 
 def color(cell, value):
     '''
@@ -74,6 +102,7 @@ def topple(sandpiles, i, j, num):
         sandpiles[i + 1][j] += 1
     return sandpiles
 
+
 def topple_neumann(sandpiles, i, j, num):
     '''
     Рассыпание песчинок по окрестности фон Неймана
@@ -88,6 +117,7 @@ def topple_neumann(sandpiles, i, j, num):
                 sandpiles[i + s][j+ t] += 1
     return sandpiles
 
+
 def set_topple_function(sandpiles, i, j, num, value):
     '''
     По значению value определяет какой тип рассыпания должен быть в симуляции
@@ -97,6 +127,7 @@ def set_topple_function(sandpiles, i, j, num, value):
         return topple(sandpiles, i, j, num)
     elif value == 2:
         return topple_neumann(sandpiles, i, j, num)
+
 
 def put_sand(sandpiles, x, y, amount):
     '''
