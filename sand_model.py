@@ -7,7 +7,6 @@ from sandpile_constants import *
 
 def simulation(simulation_width, simulation_height, topple_type, sandpiles):
     screen = pygame.display.set_mode((simulation_width, simulation_height), pygame.SCALED|pygame.RESIZABLE)
-    print(pygame.SCALED)
 
     finished = False
 
@@ -24,7 +23,7 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles):
         pygame.display.update()
 
         #создаём массив, в который будем записывать состояние после рассыпания; нужен для симметричного процесса отрисоки
-        nextsandpiles = np.zeros((simulation_width, simulation_height), dtype=np.uint32)
+        nextsandpiles = np.zeros((simulation_height, simulation_width), dtype=np.uint32)
 
         for i in range(simulation_height):
             for j in range(simulation_width):
@@ -32,7 +31,7 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles):
                 if num < N:
                     nextsandpiles[i][j] += num
                 else:
-                    set_topple_function(nextsandpiles, i, j, num, topple_type)
+                    set_topple_function(nextsandpiles, i, j, num, topple_type, simulation_width, simulation_height)
 
         sandpiles = nextsandpiles
 
@@ -42,5 +41,5 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles):
             if event.type == pygame.MOUSEBUTTONUP:
                 x, y = pygame.mouse.get_pos()
                 put_sand(sandpiles, x, y, 1e3)
-                print(x, y)
+
     pygame.quit()

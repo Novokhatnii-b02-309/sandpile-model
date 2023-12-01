@@ -86,7 +86,7 @@ def draw(screen, sandpiles, width, height, value):
     # canvas.update()
 
 
-def topple(sandpiles, i, j, num):
+def topple(sandpiles, i, j, num, width, height):
     '''
     Рассыпание песчинок по классическим правилам
     '''
@@ -94,16 +94,15 @@ def topple(sandpiles, i, j, num):
     sandpiles[i][j] += num - 4
     if j - 1 >= 0:
         sandpiles[i][j - 1] += 1
-    if j + 1 <= WIDTH - 1:
+    if j + 1 <= width - 1:
         sandpiles[i][j + 1] += 1
     if i - 1 >= 0:
         sandpiles[i - 1][j] += 1
-    if i + 1 <= HEIGHT - 1:
+    if i + 1 <= height - 1:
         sandpiles[i + 1][j] += 1
     return sandpiles
 
-
-def topple_neumann(sandpiles, i, j, num):
+def topple_neumann(sandpiles, i, j, num, width, height):
     '''
     Рассыпание песчинок по окрестности фон Неймана
     '''
@@ -114,19 +113,19 @@ def topple_neumann(sandpiles, i, j, num):
             if s == 0 and t == 0:
                 continue
             else:
-                sandpiles[i + s][j+ t] += 1
+                if 0 <= i + s <= height - 1 and 0 <= j + t <= width - 1:
+                    sandpiles[i + s][j + t] += 1
     return sandpiles
 
-
-def set_topple_function(sandpiles, i, j, num, value):
+def set_topple_function(sandpiles, i, j, num, value, width, height):
     '''
     По значению value определяет какой тип рассыпания должен быть в симуляции
     '''
 
     if value == 1:
-        return topple(sandpiles, i, j, num)
+        return topple(sandpiles, i, j, num, width, height)
     elif value == 2:
-        return topple_neumann(sandpiles, i, j, num)
+        return topple_neumann(sandpiles, i, j, num, width, height)
 
 
 def put_sand(sandpiles, x, y, amount):
