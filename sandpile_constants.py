@@ -8,5 +8,7 @@ CYAN = 'cyan'
 MAGENTA = (255, 0, 255)
 ORANGE = 'orange'
 
+
 WIDTH = 100
 HEIGHT = 100
+SANDPILES = 30000

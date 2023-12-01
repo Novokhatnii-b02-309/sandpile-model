@@ -7,6 +7,7 @@ from sandpile_constants import *
 import sand_model
 import sandpile_func
 
+
 def size_options():
     '''Настройки размеров для симуляции'''
     win_options = Toplevel()
@@ -29,14 +30,6 @@ def size_options():
     entry.pack()
     label.pack()
     button.pack()
-
-
-def set_topple(value):
-    simulation_prop.change_topple(value)
-
-
-def size_topple(w,h):
-    simulation_prop.change_size(w, h)
 
 
 def about():
@@ -62,8 +55,6 @@ def help():
     label.pack()
 
 
-
-
 def main_win_frame(win, x, y, width, height):
     '''Создаёт ячейку для виджета в главном окне'''
     self = Frame(win, bg='white', relief=SOLID, highlightbackground='gray', highlightthickness=1)
@@ -78,17 +69,21 @@ def start_main_window(win):
 
     def read_vars():
         '''Данная функция считывает переменные из строк и кнопок и устанавливает параметры симуляции'''
+        width = int(width_entry.get())
+        height = int(height_entry.get())
+        simulation_prop.change_size(width, height)
+        simulation_prop.change_topple(type_var.get())
 
-        size_topple(int(width_entry.get()), int(height_entry.get()))
-        set_topple(type_var.get())
-        # FIXME как указать на локальный объект (entry) у функции start_main_window()?
-        pass
+        sandpiles = sandpiles_entry.get(1.0, END)
+        sandpiles = sandpile_func.sandpiles_to_np(sandpiles, width, height)
+        simulation_prop.change_sandpiles(sandpiles)
 
     def start_simulation():
         global running_simulation
         running_simulation = True
         read_vars()
-        sand_model.simulation(simulation_prop.width, simulation_prop.height, simulation_prop.how_topple)
+        sand_model.simulation(simulation_prop.width, simulation_prop.height,
+                              simulation_prop.how_topple, simulation_prop.sandpiles)
 
     def end_simulation():
         global running_simulation
@@ -149,35 +144,36 @@ def start_main_window(win):
     label_show = Label(frame_left[6], text='Показывать процесс распада:', bg='white')
     label_colors = Label(frame_left[7], text='Цвета:', bg='white')
 
-    #Виджеты текста справа
+    # Виджеты текста справа
     label_buttons = Label(frame_right[0], text='Симуляция', bg='white')
     label_picture = Label(frame_right[2], text='Здесь должна быть картинка', bg='white')
     label_output = Label(frame_right[4], text='Здесь должно быть поле вывода', bg='white')
     # separator = ttk.Separator(win, orient='horizontal')
     # separator.pack(side='left', fill='x')
 
-    #Поля ввода длины, ширины и начального положения песчинок
+    # Поля ввода длины, ширины и начального положения песчинок
     width_entry = Entry(frame_left[2], width=30, font='Ubuntu, 12', bd=3)
     width_entry.insert(0, WIDTH)
     height_entry = Entry(frame_left[3], width=30, font='Ubuntu, 12', bd=3)
     height_entry.insert(0, HEIGHT)
 
     sandpiles_entry = Text(frame_left[4], width=40, height=30, font='Ubuntu, 12', bd=3)
+    sandpiles_entry.insert(1.0, str(WIDTH//2)+','+str(HEIGHT//2)+','+str(SANDPILES))
     scroll = ttk.Scrollbar(frame_left[4], orient="vertical", command=sandpiles_entry.yview)
 
-    #Выбор типа разделения
+    # Выбор типа разделения
     type_var = IntVar()
     type_var.set(1)
     btn_div_4 = Radiobutton(frame_left[5], text='4-разделение', variable=type_var, value=1, bg='white')
     btn_div_8 = Radiobutton(frame_left[5], text='8-разделение', variable=type_var, value=2, bg='white')
 
-    #Выбор показывать/не показывать шаги симуляции
+    # Выбор показывать/не показывать шаги симуляции
     show_var = BooleanVar()
     show_var.set(True)
     btn_show = Radiobutton(frame_left[6], text='Да', variable=show_var, value=True, bg='white')
     btn_not_show = Radiobutton(frame_left[6], text='Нет', variable=show_var, value=False, bg='white')
 
-    #Кнопки начать, закончить, сохранить
+    # Кнопки начать, закончить, сохранить
     btn_start = Button(frame_right[1], text="Начать симуляцию", command=start_simulation)
     btn_finish = Button(frame_right[1], text="Закончить симуляцию", command=end_simulation)
     btn_save_pic = Button(frame_right[3], text="Сохранить картинку", command=save_pic)
