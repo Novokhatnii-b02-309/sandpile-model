@@ -4,15 +4,10 @@ import numpy as np
 from sandpile_func import *
 from sandpile_constants import *
 
-def simulation(simulation_width, simulation_height, topple_type):
+
+def simulation(simulation_width, simulation_height, topple_type, sandpiles):
     screen = pygame.display.set_mode((simulation_width, simulation_height), pygame.SCALED|pygame.RESIZABLE)
     print(pygame.SCALED)
-
-    #двумерный массив для записи количества песчтнок в клетке
-    sandpiles = np.zeros((simulation_width, simulation_height), dtype=np.uint32)
-
-    #помещаем в центральную клетку много песчинок
-    sandpiles[simulation_height // 2][simulation_width // 2] = 3e4
 
     finished = False
 
