@@ -188,15 +188,15 @@ def start_main_window(win):
     btn_show = Radiobutton(frame_left[5], text='Да', variable=show_var, value=True, bg='white')
     btn_not_show = Radiobutton(frame_left[5], text='Нет', variable=show_var, value=False, bg='white')
 
-    '''
+
     # Выбор цветов
     color_var = StringVar()
     color_var.set('colorful')
     btn_colorful = Radiobutton(frame_left[6], text='Разноцветный', variable=color_var, value='colorful', bg='white')
     btn_red = Radiobutton(frame_left[6], text='Красный', variable=color_var, value='red', bg='white')
     btn_green = Radiobutton(frame_left[6], text='Зелёный', variable=color_var, value='green', bg='white')
-    btn_blue = Radiobutton(frame_left[6], text='Жёлтый', variable=color_var, value='blue', bg='white')
-    '''
+    btn_blue = Radiobutton(frame_left[6], text='Синий', variable=color_var, value='blue', bg='white')
+
 
     # Кнопки начать, закончить, сохранить
     btn_start = Button(frame_right[0], text="Начать симуляцию", command=start_simulation,
@@ -241,6 +241,11 @@ def start_main_window(win):
 
     btn_show.place(relx=0.2, rely=0.3)
     btn_not_show.place(relx=0.55, rely=0.3)
+
+    btn_colorful.place(relx=0.05, rely=0.3)
+    btn_red.place(relx=0.30, rely=0.3)
+    btn_green.place(relx=0.55, rely=0.3)
+    btn_blue.place(relx=0.80, rely=0.3)
 
     win.mainloop()
 
