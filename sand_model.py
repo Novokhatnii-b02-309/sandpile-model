@@ -5,7 +5,7 @@ from sandpile_func import *
 from sandpile_constants import *
 
 
-def simulation(simulation_width, simulation_height, topple_type, sandpiles):
+def simulation(simulation_width, simulation_height, topple_type, sandpiles, colors):
     screen = pygame.display.set_mode((simulation_width, simulation_height), pygame.SCALED|pygame.RESIZABLE)
 
     finished = False
@@ -18,7 +18,7 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles):
     screen.fill(WHITE)
 
     while not finished:
-        draw(screen, sandpiles, simulation_width, simulation_height, topple_type)
+        draw(screen, sandpiles, simulation_width, simulation_height, topple_type, colors)
 
         pygame.display.update()
 

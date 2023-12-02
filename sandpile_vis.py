@@ -82,12 +82,14 @@ def start_main_window(win):
         sandpiles = sandpile_func.sandpiles_to_np(sandpiles, width, height)
         simulation_prop.change_sandpiles(sandpiles)
 
+        simulation_prop.change_colors(type_var.get(), color_var.get())
+
     def start_simulation():
         global running_simulation
         running_simulation = True
         read_vars()
         sand_model.simulation(simulation_prop.width, simulation_prop.height,
-                              simulation_prop.how_topple, simulation_prop.sandpiles)
+                              simulation_prop.how_topple, simulation_prop.sandpiles, simulation_prop.colors)
 
     def end_simulation():
         global running_simulation

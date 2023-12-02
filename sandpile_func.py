@@ -12,6 +12,7 @@ class Properties:
         self.height = HEIGHT
         self.how_topple = 1 # 1 - для клссичсекого рассыпания, 2 - для рассыпания по фон Нейману
         self.sandpiles = np.zeros((self.height, self.width), dtype=np.uint32)
+        self.colors = COLORFUL_CLAS
 
     def change_size(self, new_width, new_height):
         self.width = new_width
@@ -22,6 +23,9 @@ class Properties:
 
     def change_sandpiles(self, new_sandpiles):
         self.sandpiles = new_sandpiles
+
+    def change_colors(self, value, new_color):
+        self.colors = COLOR_TYPES[value][new_color]
 
 
 def sandpiles_to_np(sandpiles, width, height):
@@ -45,36 +49,26 @@ def sandpiles_to_np(sandpiles, width, height):
     return(new_sandpiles)
 
 
-def color(cell, value):
+def color(cell, value, colors):
     '''
     В зависимости от количесива песчинок возвращает цвет клетки
     '''
 
     if cell == 0:
         return WHITE
-    elif cell == 1:
-        return GREEN
-    elif cell == 2:
-        return PURPLE
-    elif cell == 3:
-        return YELLOW
+    elif value == 1:
+        if cell < 4:
+            return colors[cell-1]
+        else:
+            return colors[3]
     else:
-        if value == 1:
-            return RED
-        elif value == 2:
-            if cell == 4:
-                return BLUE
-            elif cell == 5:
-                return CYAN
-            elif cell == 6:
-                return MAGENTA
-            elif cell == 7:
-                return ORANGE
-            else:
-                return RED
+        if cell < 8:
+            return colors[cell-1]
+        else:
+            return colors[7]
 
 
-def draw(screen, sandpiles, width, height, value):
+def draw(screen, sandpiles, width, height, value, colors):
     '''
     Последовательная отрисовка массива с песчинками
     '''
@@ -82,7 +76,7 @@ def draw(screen, sandpiles, width, height, value):
     for i in range(height):
         for j in range(width):
             # canvas.create_rectangle(j, i, (j+1), (i+1), fill=color(sandpiles[i][j]), outline='')
-            screen.set_at((j, i), color(sandpiles[i][j], value))
+            screen.set_at((j, i), color(sandpiles[i][j], value, colors))
     # canvas.update()
 
 
