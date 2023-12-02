@@ -21,6 +21,8 @@ RED_NEUM = [(16,0,0), (32,0,0), (48,0,0), (64,0,0), (96,0,0), (128,0,0), (192,0,
 GREEN_NEUM = [(0,16,0), (0,32,0), (0,48,0), (0,64,0), (0,96,0), (0,128,0), (0,192,0), (0,255,0)]
 BLUE_NEUM = [(0,0,16), (0,0,32), (0,0,48), (0,0,64), (0,0,96), (0,0,128), (0,0,192), (0,0,255)]
 
+
+# Словарь по ключам в виде типа рассыпания (1-classical, 2-neumann), и цвета выдаёт список цветов
 COLOR_TYPES = {1: {'colorful': COLORFUL_CLAS, 'red': RED_CLAS, 'green': GREEN_CLAS, 'blue': BLUE_CLAS},
                2: {'colorful': COLORFUL_NEUM, 'red': RED_NEUM, 'green': GREEN_NEUM, 'blue': BLUE_NEUM}}
 

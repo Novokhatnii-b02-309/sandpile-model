@@ -57,11 +57,14 @@ def color(cell, value, colors):
     if cell == 0:
         return WHITE
     elif value == 1:
+        # classical
         if cell < 4:
             return colors[cell-1]
+            # берёт цвет из colors по номеру
         else:
             return colors[3]
     else:
+        # neumann
         if cell < 8:
             return colors[cell-1]
         else:
