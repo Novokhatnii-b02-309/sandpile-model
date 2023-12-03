@@ -86,10 +86,15 @@ def start_main_window(win):
 
     def start_simulation():
         global running_simulation
-        running_simulation = True
-        read_vars()
-        sand_model.simulation(simulation_prop.width, simulation_prop.height,
-                              simulation_prop.how_topple, simulation_prop.sandpiles, simulation_prop.colors)
+        try:
+            text_output.configure(foreground='black', text='Запуск симуляции')
+            win.update()
+            read_vars()
+            sand_model.simulation(simulation_prop.width, simulation_prop.height,
+                                  simulation_prop.how_topple, simulation_prop.sandpiles, simulation_prop.colors)
+            running_simulation = True
+        except:
+            text_output.configure(foreground='red', text='Ошибка')
 
     def end_simulation():
         global running_simulation
@@ -164,7 +169,7 @@ def start_main_window(win):
     # Виджеты текста справа
     #label_buttons = Label(frame_right[0], text='Симуляция', bg='white')
     label_picture = Label(frame_right[1], text='Здесь должна быть картинка', bg='white')
-    label_output = Label(frame_right[3], text='Здесь должно быть поле вывода', bg='white')
+    label_output = Label(frame_right[3], text='Поле вывода', bg='white')
     # separator = ttk.Separator(win, orient='horizontal')
     # separator.pack(side='left', fill='x')
 
@@ -207,6 +212,9 @@ def start_main_window(win):
                         foreground='red', font=('TkTooltipFont', 11))
     btn_save_pic = Button(frame_right[2], text="Сохранить картинку", command=save_pic)
 
+    # Поле вывода
+    text_output = Label(frame_right[3], text='', bg='white', font=('TkDefaultFont', 15))
+
     # Пакуем виджеты на экране
     label_title.place(relx=0.2, rely=0.25)
     panel.place(relx=0.7, rely=0.1)
@@ -248,6 +256,8 @@ def start_main_window(win):
     btn_red.place(relx=0.30, rely=0.3)
     btn_green.place(relx=0.55, rely=0.3)
     btn_blue.place(relx=0.80, rely=0.3)
+
+    text_output.pack(pady=10)
 
     win.mainloop()
 
