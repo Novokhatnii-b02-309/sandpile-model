@@ -3,6 +3,8 @@ import time
 from tkinter.messagebox import *
 from tkinter import ttk
 from PIL import ImageTk, Image
+from threading import Thread
+import queue
 
 from sandpile_constants import *
 import sand_model
@@ -84,14 +86,19 @@ def start_main_window(win):
 
         simulation_prop.change_colors(type_var.get(), color_var.get())
 
-    def start_simulation():
+    def start_simulation(control_queue):
         global running_simulation
         try:
             text_output.configure(foreground='black', text='Запуск симуляции')
             win.update()
             read_vars()
-            sand_model.simulation(simulation_prop.width, simulation_prop.height,
-                                  simulation_prop.how_topple, simulation_prop.sandpiles, simulation_prop.colors)
+            running_simulation = True
+            print(running_simulation)
+            pygame_thread = Thread(target=sand_model.simulation, args=(simulation_prop.width, simulation_prop.height,
+                                  simulation_prop.how_topple, simulation_prop.sandpiles, simulation_prop.colors, control_queue,))
+            # sand_model.simulation(simulation_prop.width, simulation_prop.height,
+            #                       simulation_prop.how_topple, simulation_prop.sandpiles, simulation_prop.colors)
+            pygame_thread.start()
             running_simulation = True
         except:
             text_output.configure(foreground='red', text='Ошибка')
@@ -104,17 +111,26 @@ def start_main_window(win):
         pass
         # FIXME
 
+    def send_command(command, control_queue, running_simulation):
+        control_queue.put(command)
+        if command == 'START' and running_simulation == False:
+            start_simulation(control_queue)
+
     global win_height
     global win_width
     global simulation_prop # класс, в котором будет храниться информация об окне симуляции
+    global running_simulation
     win_width = 900
     win_height = 720
     simulation_prop = sandpile_func.Properties()
+    running_simulation = False
 
     win.title('Sandpile model')
     win.geometry(str(win_width)+'x'+ str(win_height)+'+'+'300+300')
     win.resizable(False, False)
     win.configure(bg='white')
+
+    control_queue = queue.Queue()
 
     m = Menu(win)
     win.config(menu=m)
@@ -151,7 +167,7 @@ def start_main_window(win):
     # Заголовок
     label_title = Label(frame_top, text='Модель песчаной кучи', bg='yellow',
                         foreground='black', font=('TkHeadingFont', 26))
-    img = ImageTk.PhotoImage(Image.open("title_image.png"))
+    img = ImageTk.PhotoImage(Image.open("images/title_image.png"))
     panel = Label(frame_top, image=img, bg='yellow')
 
 
@@ -206,11 +222,11 @@ def start_main_window(win):
 
 
     # Кнопки начать, закончить, сохранить
-    btn_start = Button(frame_right[0], text="Начать симуляцию", command=start_simulation,
+    btn_start = Button(frame_right[0], text="Начать симуляцию", command=lambda: send_command('START', control_queue, running_simulation),
                        foreground='darkgreen', font=('TkTooltipFont', 11))
-    btn_finish = Button(frame_right[0], text="Закончить симуляцию", command=end_simulation,
+    btn_finish = Button(frame_right[0], text="Закончить симуляцию", command=lambda: send_command('PAUSE', control_queue, running_simulation),
                         foreground='red', font=('TkTooltipFont', 11))
-    btn_save_pic = Button(frame_right[2], text="Сохранить картинку", command=save_pic)
+    btn_save_pic = Button(frame_right[2], text="Сохранить картинку", command=lambda: send_command('SAVEFIG', control_queue, running_simulation))
 
     # Поле вывода
     text_output = Label(frame_right[3], text='', bg='white', font=('TkDefaultFont', 15))
