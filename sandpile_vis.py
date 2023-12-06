@@ -125,6 +125,7 @@ def start_main_window(win):
             # sand_model.simulation(simulation_prop.width, simulation_prop.height,
             #                       simulation_prop.how_topple, simulation_prop.sandpiles, simulation_prop.colors)
             pygame_thread.start()
+            running_simulation = False
         except:
             text_output.configure(foreground='red', text='Ошибка')
 
