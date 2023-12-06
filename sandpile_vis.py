@@ -125,7 +125,6 @@ def start_main_window(win):
             # sand_model.simulation(simulation_prop.width, simulation_prop.height,
             #                       simulation_prop.how_topple, simulation_prop.sandpiles, simulation_prop.colors)
             pygame_thread.start()
-            running_simulation = True
         except:
             text_output.configure(foreground='red', text='Ошибка')
 
@@ -141,6 +140,8 @@ def start_main_window(win):
         control_queue.put(command)
         if command == 'START' and running_simulation == False:
             start_simulation(control_queue)
+        elif command == 'QUIT':
+            end_simulation()
 
     global win_height
     global win_width
@@ -253,7 +254,10 @@ def start_main_window(win):
     # Кнопки начать, закончить, сохранить
     btn_start = Button(frame_right[0], text="Начать симуляцию", command=lambda: send_command('START', control_queue, running_simulation),
                        foreground='darkgreen', font=('TkTooltipFont', 11))
-    btn_finish = Button(frame_right[0], text="Закончить симуляцию", command=lambda: send_command('PAUSE', control_queue, running_simulation),
+    # FIXME
+    btn_pause = Button(frame_right[0], text="Приостановить", command=lambda: send_command('PAUSE', control_queue, running_simulation),
+                       foreground='darkgreen', font=('TkTooltipFont', 11))
+    btn_finish = Button(frame_right[0], text="Закончить симуляцию", command=lambda: send_command('QUIT', control_queue, running_simulation),
                         foreground='red', font=('TkTooltipFont', 11))
     btn_save_pic = Button(frame_right[2], text="Сохранить картинку", command=lambda: send_command('SAVEFIG', control_queue, running_simulation))
 

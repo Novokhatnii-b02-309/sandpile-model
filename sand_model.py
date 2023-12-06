@@ -49,6 +49,8 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles, colo
             command = control_queue.get(block=False)
             if command == 'START':
                 running = True
+            elif command == 'QUIT':
+                finished = True
             elif command == 'PAUSE':
                 running = False
             elif command == 'SAVEFIG':
