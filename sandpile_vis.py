@@ -121,13 +121,16 @@ def start_main_window(win):
     global simulation_prop # класс, в котором будет храниться информация об окне симуляции
     global running_simulation
     win_width = 900
-    win_height = 720
+    win_height = 660
+
+    win.minsize(900, 660)
+
     simulation_prop = sandpile_func.Properties()
     running_simulation = False
 
     win.title('Sandpile model')
     win.geometry(str(win_width)+'x'+ str(win_height)+'+'+'300+300')
-    win.resizable(False, False)
+    #win.resizable(False, False)
     win.configure(bg='white')
 
     control_queue = queue.Queue()
