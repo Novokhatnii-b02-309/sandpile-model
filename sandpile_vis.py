@@ -53,7 +53,33 @@ def help():
     win_help = Toplevel()
     win_help.resizable(width=False, height=False)
     win_help.title('Помощь')
-    label = Label(win_help, width=25, height=5, bg="white", fg='black', text='Помощь')
+    help_text = '''Помощь
+    Поле ввода ширина: задаёт длину поля по горизонтали в клетках
+    
+    Поле ввода высота: задаёт длину поля по вертикальной оси в клетках
+    
+    Начальное поле песчинок: задаёт начальное положение песчинок, 
+    x,y,n - добавляет n песчинок в клетку x,y
+    клетки добавляются в каждой строке отдельно
+    x - координата в клетках по горизонтали, ось вправо
+    y - по вертикали, ось вниз
+    0,0 - левая верхняя клетка
+    Пример ввода:
+    0,0,100
+    10,10,20
+    
+    Показывать процесс распада: 
+    показывать ли промежуточные шаги от начального состояния до разваленного
+    
+    Цвета: задаёт цвета клеток с песчинками
+    
+    Начать симуляцию:
+    Создаёт новую симуляцию/продолжает существующую
+    
+    Закончить симуляцию:
+    Останавливает текущую симуляцию
+    '''
+    label = Label(win_help, bg="white", fg='black', text=help_text)
     # FIXME
     label.pack()
 
@@ -121,15 +147,15 @@ def start_main_window(win):
     global simulation_prop # класс, в котором будет храниться информация об окне симуляции
     global running_simulation
     win_width = 900
-    win_height = 660
+    win_height = 640
 
-    win.minsize(900, 660)
+    win.minsize(900, 640)
 
     simulation_prop = sandpile_func.Properties()
     running_simulation = False
 
     win.title('Sandpile model')
-    win.geometry(str(win_width)+'x'+ str(win_height)+'+'+'300+300')
+    win.geometry(str(win_width)+'x'+ str(win_height)+'+'+'300+0')
     #win.resizable(False, False)
     win.configure(bg='white')
 
@@ -236,7 +262,7 @@ def start_main_window(win):
 
     # Пакуем виджеты на экране
     label_title.place(relx=0.2, rely=0.25)
-    panel.place(relx=0.7, rely=0.1)
+    panel.place(relx=0.7, rely=0.0)
 
 
     label_param.pack()
