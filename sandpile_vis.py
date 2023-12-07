@@ -73,14 +73,16 @@ def help():
     
     Цвета: задаёт цвета клеток с песчинками
     
-    Начать симуляцию:
+    Начать:
     Создаёт новую симуляцию/продолжает существующую
     
-    Закончить симуляцию:
-    Останавливает текущую симуляцию
+    Приостановить:
+    Приостанавливает текущую симуляцию
+    
+    Закончить:
+    Завершает текущую симуляцию
     '''
     label = Label(win_help, bg="white", fg='black', text=help_text)
-    # FIXME
     label.pack()
 
 
@@ -253,12 +255,11 @@ def start_main_window(win):
 
 
     # Кнопки начать, закончить, сохранить
-    btn_start = Button(frame_right[0], text="Начать симуляцию", command=lambda: send_command('START', control_queue, running_simulation),
+    btn_start = Button(frame_right[0], text="Начать", command=lambda: send_command('START', control_queue, running_simulation),
                        foreground='darkgreen', font=('TkTooltipFont', 11))
-    # FIXME
     btn_pause = Button(frame_right[0], text="Приостановить", command=lambda: send_command('PAUSE', control_queue, running_simulation),
-                       foreground='darkgreen', font=('TkTooltipFont', 11))
-    btn_finish = Button(frame_right[0], text="Закончить симуляцию", command=lambda: send_command('QUIT', control_queue, running_simulation),
+                       foreground='darkblue', font=('TkTooltipFont', 11))
+    btn_finish = Button(frame_right[0], text="Закончить", command=lambda: send_command('QUIT', control_queue, running_simulation),
                         foreground='red', font=('TkTooltipFont', 11))
     btn_save_pic = Button(frame_right[2], text="Сохранить картинку", command=lambda: send_command('SAVEFIG', control_queue, running_simulation))
 
@@ -295,8 +296,9 @@ def start_main_window(win):
     btn_div_4.place(relx=0.2, rely=0.3)
     btn_div_8.place(relx=0.55, rely=0.3)
 
-    btn_start.place(relx=0.05, rely=0.1, relwidth=0.4, relheight=0.8)
-    btn_finish.place(relx=0.55, rely=0.1, relwidth=0.4, relheight=0.8)
+    btn_start.place(relx=0.05, rely=0.1, relwidth=0.25, relheight=0.8)
+    btn_pause.place(relx=0.35, rely=0.1, relwidth=0.25, relheight=0.8)
+    btn_finish.place(relx=0.65, rely=0.1, relwidth=0.25, relheight=0.8)
     btn_save_pic.pack()
 
     btn_show.place(relx=0.2, rely=0.3)
