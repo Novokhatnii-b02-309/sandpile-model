@@ -52,7 +52,10 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles, colo
             elif command == 'QUIT':
                 finished = True
             elif command == 'PAUSE':
-                running = False
+                if running == True:
+                    running = False
+                elif running == False:
+                    running = True
             elif command == 'SAVEFIG':
                 pass
 
