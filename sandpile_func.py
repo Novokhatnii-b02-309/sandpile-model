@@ -13,6 +13,7 @@ class Properties:
         self.how_topple = 1 # 1 - для клссичсекого рассыпания, 2 - для рассыпания по фон Нейману
         self.sandpiles = np.zeros((self.height, self.width), dtype=np.uint32)
         self.colors = COLORFUL_CLAS
+        self.show = True
 
     def change_size(self, new_width, new_height):
         self.width = new_width
@@ -26,6 +27,10 @@ class Properties:
 
     def change_colors(self, value, new_color):
         self.colors = COLOR_TYPES[value][new_color]
+
+    def change_show(self, show):
+        # show - boolean
+        self.show = show
 
 
 def sandpiles_to_np(sandpiles, width, height):
@@ -46,7 +51,7 @@ def sandpiles_to_np(sandpiles, width, height):
     new_sandpiles = np.zeros((height, width), dtype=np.uint32)
     for sand in sandpiles:
         new_sandpiles[sand[1]][sand[0]] = sand[2]
-    return(new_sandpiles)
+    return new_sandpiles
 
 
 def color(cell, value, colors):

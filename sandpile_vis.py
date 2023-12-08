@@ -203,6 +203,8 @@ class Main_window:
 
         self.simulation_prop.change_colors(self.type_var.get(), self.color_var.get())
 
+        self.simulation_prop.change_show(self.show_var.get())
+
     def start_simulation(self, control_queue):
         try:
             self.text_output.configure(foreground='black', text='Запуск симуляции')
@@ -211,7 +213,8 @@ class Main_window:
             self.running_simulation = True
             print(self.running_simulation)
             pygame_thread = Thread(target=sand_model.simulation, args=(self.simulation_prop.width, self.simulation_prop.height,
-                                  self.simulation_prop.how_topple, self.simulation_prop.sandpiles, self.simulation_prop.colors, control_queue,))
+                                   self.simulation_prop.how_topple, self.simulation_prop.sandpiles, self.simulation_prop.colors,
+                                   self.simulation_prop.show, control_queue))
             # sand_model.simulation(self.simulation_prop.width, self.simulation_prop.height,
             #                       self.simulation_prop.how_topple, self.simulation_prop.sandpiles,
             #                       self.simulation_prop.colors)

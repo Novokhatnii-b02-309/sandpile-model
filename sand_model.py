@@ -6,7 +6,7 @@ from sandpile_func import *
 from sandpile_constants import *
 
 
-def simulation(simulation_width, simulation_height, topple_type, sandpiles, colors, control_queue):
+def simulation(simulation_width, simulation_height, topple_type, sandpiles, colors, show, control_queue):
     screen = pygame.display.set_mode((simulation_width, simulation_height), pygame.SCALED|pygame.RESIZABLE)
 
     finished = False
@@ -18,25 +18,29 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles, colo
         N = 8
 
     screen.fill(WHITE)
+    toppled = False
 
     while not finished:
         if running:
-            draw(screen, sandpiles, simulation_width, simulation_height, topple_type, colors)
+            if show or not toppled:
+                draw(screen, sandpiles, simulation_width, simulation_height, topple_type, colors)
 
-            pygame.display.update()
+                pygame.display.update()
 
-            #создаём массив, в который будем записывать состояние после рассыпания; нужен для симметричного процесса отрисоки
-            nextsandpiles = np.zeros((simulation_height, simulation_width), dtype=np.uint32)
+        #создаём массив, в который будем записывать состояние после рассыпания; нужен для симметричного процесса отрисоки
+        nextsandpiles = np.zeros((simulation_height, simulation_width), dtype=np.uint32)
 
-            for i in range(simulation_height):
-                for j in range(simulation_width):
-                    num = sandpiles[i][j]
-                    if num < N:
-                        nextsandpiles[i][j] += num
-                    else:
-                        set_topple_function(nextsandpiles, i, j, num, topple_type, simulation_width, simulation_height)
+        toppled = False
+        for i in range(simulation_height):
+            for j in range(simulation_width):
+                num = sandpiles[i][j]
+                if num < N:
+                    nextsandpiles[i][j] += num
+                else:
+                    set_topple_function(nextsandpiles, i, j, num, topple_type, simulation_width, simulation_height)
+                    toppled = True
 
-            sandpiles = nextsandpiles
+        sandpiles = nextsandpiles
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
