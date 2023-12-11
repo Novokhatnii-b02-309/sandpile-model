@@ -55,6 +55,8 @@ def sandpiles_to_np(sandpiles, width, height):
     return new_sandpiles
 
 def csv_to_np(csv_name):
+    '''На вход берёт название csv файла в виде /<название файла>
+    на выход выдаёт массив numpy, ширину и высоту поля (массива)'''
     csv_name = csv_name.replace('\n', '') #Почему-то в конце текста всегда есть "\n"
     csv_name = csv_name[1::]
     with open(csv_name) as fp:
