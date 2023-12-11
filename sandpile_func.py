@@ -1,5 +1,6 @@
 from sandpile_constants import *
 import numpy as np
+import csv
 
 
 class Properties:
@@ -53,6 +54,30 @@ def sandpiles_to_np(sandpiles, width, height):
         new_sandpiles[sand[1]][sand[0]] = sand[2]
     return new_sandpiles
 
+def csv_to_np(csv_name):
+    csv_name = csv_name.replace('\n', '') #Почему-то в конце текста всегда есть "\n"
+    csv_name = csv_name[1::]
+    with open(csv_name) as fp:
+        reader = csv.reader(fp, delimiter=",", quotechar='"')
+        # next(reader, None)  # skip the headers
+        sandpiles = [list(map(int, row)) for row in reader]
+        #print(sandpiles)
+        height = len(sandpiles)
+        width = len(sandpiles[0])
+        '''
+        for i in range(height):
+            if len(sandpiles[i]) != width:
+                return -1
+        '''
+
+        new_sandpiles = np.zeros((height, width), dtype=np.uint32)
+        for i in range(height):
+            for j in range(width):
+                new_sandpiles[i][j] = sandpiles[i][j]
+
+
+
+        return (new_sandpiles, width, height)
 
 def color(cell, value, colors):
     '''

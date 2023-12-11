@@ -192,14 +192,18 @@ class Main_window:
 
     def read_vars(self):
         '''Данная функция считывает переменные из строк и кнопок и устанавливает параметры симуляции'''
-        width = int(self.width_entry.get())
-        height = int(self.height_entry.get())
-        self.simulation_prop.change_size(width, height)
         self.simulation_prop.change_topple(self.type_var.get())
 
         sandpiles = self.sandpiles_entry.get(1.0, END)
-        sandpiles = sandpile_func.sandpiles_to_np(sandpiles, width, height)
-        self.simulation_prop.change_sandpiles(sandpiles)
+        if sandpiles[0] == '/':
+            new_sandpiles, width, height = sandpile_func.csv_to_np(sandpiles)
+        else:
+            width = int(self.width_entry.get())
+            height = int(self.height_entry.get())
+            new_sandpiles = sandpile_func.sandpiles_to_np(sandpiles, width, height)
+
+        self.simulation_prop.change_sandpiles(new_sandpiles)
+        self.simulation_prop.change_size(width, height)
 
         self.simulation_prop.change_colors(self.type_var.get(), self.color_var.get())
 
@@ -221,7 +225,10 @@ class Main_window:
             pygame_thread.start()
             self.running_simulation = False
         except:
-            self.text_output.configure(foreground='red', text='Ошибка')
+            self.show_error()
+
+    def show_error(self):
+        self.text_output.configure(fg='red', text='Ошибка')
 
     def end_simulation(self):
         self.running_simulation = False
