@@ -218,7 +218,6 @@ class Main_window:
             self.win.update()
             self.read_vars()
             self.running_simulation = True
-            print(self.running_simulation)
             pygame_thread = Thread(target=sand_model.simulation, args=(self.simulation_prop.width, self.simulation_prop.height,
                                    self.simulation_prop.how_topple, self.simulation_prop.sandpiles, self.simulation_prop.colors,
                                    self.simulation_prop.show, control_queue, self))
