@@ -6,7 +6,7 @@ from sandpile_func import *
 from sandpile_constants import *
 
 
-def simulation(simulation_width, simulation_height, topple_type, sandpiles, colors, show, control_queue):
+def simulation(simulation_width, simulation_height, topple_type, sandpiles, colors, show, control_queue, obj):
     screen = pygame.display.set_mode((simulation_width, simulation_height), pygame.SCALED|pygame.RESIZABLE)
 
     finished = False
@@ -67,3 +67,4 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles, colo
             pass
 
     pygame.quit()
+    obj.running_simulation = False
