@@ -62,9 +62,7 @@ def csv_to_np(csv_name):
     csv_name = csv_name[1::]
     with open(csv_name) as fp:
         reader = csv.reader(fp, delimiter=",", quotechar='"')
-        # next(reader, None)  # skip the headers
         sandpiles = [list(map(int, row)) for row in reader]
-        # print(sandpiles)
         height = len(sandpiles)
         width = len(sandpiles[0])
         '''
@@ -110,9 +108,7 @@ def draw(screen, sandpiles, width, height, value, colors):
 
     for i in range(height):
         for j in range(width):
-            # canvas.create_rectangle(j, i, (j+1), (i+1), fill=color(sandpiles[i][j]), outline='')
             screen.set_at((j, i), color(sandpiles[i][j], value, colors))
-    # canvas.update()
 
 
 def topple(sandpiles, i, j, num, width, height):

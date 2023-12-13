@@ -25,7 +25,6 @@ class MainWindow:
 
         win.title('Sandpile model')
         win.geometry(str(self.win_width) + 'x' + str(self.win_height) + '+' + '300+0')
-        # win.resizable(False, False)
         win.configure(bg='white')
 
         control_queue = queue.Queue()
@@ -137,7 +136,6 @@ class MainWindow:
         panel.place(relx=0.7, rely=0.0)
 
         label_param.pack()
-        # label_size.pack()
         label_width.pack()
         label_height.pack()
         label_sandpiles.pack()
@@ -146,7 +144,6 @@ class MainWindow:
         label_show.pack()
         label_colors.pack()
 
-        # label_buttons.pack()
         label_picture.pack()
         label_output.pack()
 
@@ -182,7 +179,6 @@ class MainWindow:
         '''Создаёт ячейку для виджета в главном окне'''
         frame = Frame(win, bg='white', relief=SOLID, highlightbackground='gray', highlightthickness=1,
                       width=width * self.win_width, height=height * self.win_height)
-        # убрал (, width=width, height=height)
         frame.grid_propagate(False)
         frame.place(relx=x, rely=y, relwidth=width, relheight=height)
         return frame
@@ -218,9 +214,6 @@ class MainWindow:
             pygame_thread = Thread(target=sand_model.simulation, args=(self.simulation_prop.width, self.simulation_prop.height,
                                    self.simulation_prop.how_topple, self.simulation_prop.sandpiles, self.simulation_prop.colors,
                                    self.simulation_prop.show, control_queue, self))
-            # sand_model.simulation(self.simulation_prop.width, self.simulation_prop.height,
-            #                       self.simulation_prop.how_topple, self.simulation_prop.sandpiles,
-            #                       self.simulation_prop.colors)
             pygame_thread.start()
         except:
             self.show_error()
@@ -319,6 +312,3 @@ class MainWindow:
         '''
         label = Label(win_help, bg="white", fg='black', text=help_text)
         label.pack()
-
-
-# start_main_window()
