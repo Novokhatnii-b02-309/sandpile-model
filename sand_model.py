@@ -7,13 +7,13 @@ from sandpile_constants import *
 
 
 def simulation(simulation_width, simulation_height, topple_type, sandpiles, colors, show, control_queue, obj):
-    screen = pygame.display.set_mode((simulation_width, simulation_height), pygame.SCALED|pygame.RESIZABLE)
+    screen = pygame.display.set_mode((simulation_width, simulation_height), pygame.SCALED | pygame.RESIZABLE)
 
     finished = False
     running = True
 
     if topple_type == 1:
-        N = 4 # количество песчинок, при котором происходит обвал
+        N = 4  # количество песчинок, при котором происходит обвал
     elif topple_type == 2:
         N = 8
 
@@ -27,7 +27,8 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles, colo
 
                 pygame.display.update()
 
-        #создаём массив, в который будем записывать состояние после рассыпания; нужен для симметричного процесса отрисоки
+        # создаём массив, в который будем записывать состояние после рассыпания;
+        # нужен для симметричного процесса отрисоки
         nextsandpiles = np.zeros((simulation_height, simulation_width), dtype=np.uint32)
 
         toppled = False
@@ -56,9 +57,9 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles, colo
             elif command == 'QUIT':
                 finished = True
             elif command == 'PAUSE':
-                if running == True:
+                if running:
                     running = False
-                elif running == False:
+                elif not running:
                     running = True
             elif command == 'SAVEFIG':
                 pass

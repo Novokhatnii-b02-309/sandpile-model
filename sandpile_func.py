@@ -11,7 +11,7 @@ class Properties:
     def __init__(self):
         self.width = WIDTH
         self.height = HEIGHT
-        self.how_topple = 1 # 1 - для клссичсекого рассыпания, 2 - для рассыпания по фон Нейману
+        self.how_topple = 1  # 1 - для клссичсекого рассыпания, 2 - для рассыпания по фон Нейману
         self.sandpiles = np.zeros((self.height, self.width), dtype=np.uint32)
         self.colors = COLORFUL_CLAS
         self.show = True
@@ -54,16 +54,17 @@ def sandpiles_to_np(sandpiles, width, height):
         new_sandpiles[sand[1]][sand[0]] = sand[2]
     return new_sandpiles
 
+
 def csv_to_np(csv_name):
     '''На вход берёт название csv файла в виде /<название файла>
     на выход выдаёт массив numpy, ширину и высоту поля (массива)'''
-    csv_name = csv_name.replace('\n', '') #Почему-то в конце текста всегда есть "\n"
+    csv_name = csv_name.replace('\n', '')  # Почему-то в конце текста всегда есть "\n"
     csv_name = csv_name[1::]
     with open(csv_name) as fp:
         reader = csv.reader(fp, delimiter=",", quotechar='"')
         # next(reader, None)  # skip the headers
         sandpiles = [list(map(int, row)) for row in reader]
-        #print(sandpiles)
+        # print(sandpiles)
         height = len(sandpiles)
         width = len(sandpiles[0])
         '''
@@ -77,9 +78,8 @@ def csv_to_np(csv_name):
             for j in range(width):
                 new_sandpiles[i][j] = sandpiles[i][j]
 
+        return new_sandpiles, width, height
 
-
-        return (new_sandpiles, width, height)
 
 def color(cell, value, colors):
     '''
@@ -131,6 +131,7 @@ def topple(sandpiles, i, j, num, width, height):
         sandpiles[i + 1][j] += 1
     return sandpiles
 
+
 def topple_neumann(sandpiles, i, j, num, width, height):
     '''
     Рассыпание песчинок по окрестности фон Неймана
@@ -145,6 +146,7 @@ def topple_neumann(sandpiles, i, j, num, width, height):
                 if 0 <= i + s <= height - 1 and 0 <= j + t <= width - 1:
                     sandpiles[i + s][j + t] += 1
     return sandpiles
+
 
 def set_topple_function(sandpiles, i, j, num, value, width, height):
     '''

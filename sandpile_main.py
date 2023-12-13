@@ -3,7 +3,7 @@ from sandpile_vis import *
 
 def main():
     win = Tk()
-    Main_window(win)
+    MainWindow(win)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,4 @@
 from tkinter import *
-import time
-from tkinter.messagebox import *
 from tkinter import ttk
 from PIL import ImageTk, Image
 from threading import Thread
@@ -11,7 +9,7 @@ import sand_model
 import sandpile_func
 
 
-class Main_window:
+class MainWindow:
     '''Основное окно и его методы'''
     def __init__(self, win):
         self.win = win
@@ -21,7 +19,8 @@ class Main_window:
 
         win.minsize(900, 640)
 
-        self.simulation_prop = sandpile_func.Properties() # класс, в котором будет храниться информация об окне симуляции
+        self.simulation_prop = sandpile_func.Properties()
+        # класс, в котором будет храниться информация об окне симуляции
         self.running_simulation = False
 
         win.title('Sandpile model')
@@ -57,13 +56,13 @@ class Main_window:
 
         for i in range(len(frames_xywh_left)):
             frame_left.append(self.main_win_frame(win, frames_xywh_left[i][0], frames_xywh_left[i][1],
-                                             frames_xywh_left[i][2], frames_xywh_left[i][3]))
+                                                  frames_xywh_left[i][2], frames_xywh_left[i][3]))
 
         frame_right = []
 
         for i in range(len(frames_xywh_right)):
             frame_right.append(self.main_win_frame(win, frames_xywh_right[i][0], frames_xywh_right[i][1],
-                                              frames_xywh_right[i][2], frames_xywh_right[i][3]))
+                                                   frames_xywh_right[i][2], frames_xywh_right[i][3]))
 
         # Заголовок
         label_title = Label(frame_top, text='Модель песчаной кучи', bg='yellow',
@@ -181,10 +180,8 @@ class Main_window:
 
     def main_win_frame(self, win, x, y, width, height):
         '''Создаёт ячейку для виджета в главном окне'''
-        global win_height
-        global win_width
         frame = Frame(win, bg='white', relief=SOLID, highlightbackground='gray', highlightthickness=1,
-                     width=width * self.win_width, height=height * self.win_height)
+                      width=width * self.win_width, height=height * self.win_height)
         # убрал (, width=width, height=height)
         frame.grid_propagate(False)
         frame.place(relx=x, rely=y, relwidth=width, relheight=height)
@@ -196,8 +193,8 @@ class Main_window:
 
         sandpiles = self.sandpiles_entry.get(1.0, END)
 
-        #выбираем набор песчинок, ширину и высоту или первым (csv файл, ширина и высота по нему), или вторым способом
-        #(каждая клетка вводится по отдельности, ширина и высота отдельно)
+        # выбираем набор песчинок, ширину и высоту или первым (csv файл, ширина и высота по нему), или вторым способом
+        # (каждая клетка вводится по отдельности, ширина и высота отдельно)
         if sandpiles[0] == '/':
             new_sandpiles, width, height = sandpile_func.csv_to_np(sandpiles)
         else:
@@ -240,7 +237,7 @@ class Main_window:
 
     def send_command(self, command, control_queue, running_simulation):
         control_queue.put(command)
-        if command == 'START' and self.running_simulation == False:
+        if command == 'START' and not self.running_simulation:
             self.start_simulation(control_queue)
         elif command == 'QUIT':
             self.end_simulation()
@@ -251,7 +248,7 @@ class Main_window:
         win_options.resizable(width=False, height=False)
         win_options.title('Настройки размеров')
 
-        def def_size(self):
+        def def_size():
             value = entry.get()
             value = value.split(', ')
             value = list(map(int, value))
@@ -322,7 +319,6 @@ class Main_window:
         '''
         label = Label(win_help, bg="white", fg='black', text=help_text)
         label.pack()
-
 
 
 # start_main_window()

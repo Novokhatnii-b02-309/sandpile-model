@@ -7,9 +7,9 @@ BLUE = 'blue'
 CYAN = 'cyan'
 MAGENTA = (255, 0, 255)
 ORANGE = 'orange'
-red = (255,0,0)
-green = (0,255,0)
-blue = (0,0,255)
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 255)
 
 COLORFUL_CLAS = [GREEN, PURPLE, YELLOW, RED]
 RED_CLAS = ['#FF9999', '#FF3333', '#CC0000', '#660000']
