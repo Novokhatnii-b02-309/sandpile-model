@@ -117,16 +117,16 @@ class MainWindow:
 
         # Кнопки начать, закончить, сохранить
         btn_start = Button(frame_right[0], text="Начать",
-                           command=lambda: self.send_command('START', control_queue, self.running_simulation),
+                           command=lambda: self.send_command('START', control_queue),
                            foreground='darkgreen', font=('TkTooltipFont', 11))
         btn_pause = Button(frame_right[0], text="Приостановить",
-                           command=lambda: self.send_command('PAUSE', control_queue, self.running_simulation),
+                           command=lambda: self.send_command('PAUSE', control_queue),
                            foreground='darkblue', font=('TkTooltipFont', 11))
         btn_finish = Button(frame_right[0], text="Закончить",
-                            command=lambda: self.send_command('QUIT', control_queue, self.running_simulation),
+                            command=lambda: self.send_command('QUIT', control_queue),
                             foreground='red', font=('TkTooltipFont', 11))
         btn_save_pic = Button(frame_right[2], text="Сохранить картинку",
-                              command=lambda: self.send_command('SAVEFIG', control_queue, self.running_simulation))
+                              command=lambda: self.send_command('SAVEFIG', control_queue))
 
         # Поле вывода
         self.text_output = Label(frame_right[3], text='', bg='white', font=('TkDefaultFont', 15))
@@ -228,11 +228,11 @@ class MainWindow:
         pass
         # FIXME
 
-    def send_command(self, command, control_queue, running_simulation):
+    def send_command(self, command, control_queue):
         control_queue.put(command)
         if command == 'START' and not self.running_simulation:
             self.start_simulation(control_queue)
-        elif command == 'QUIT':
+        elif command == 'QUIT' and self.running_simulation:
             self.end_simulation()
 
     def size_options(self):

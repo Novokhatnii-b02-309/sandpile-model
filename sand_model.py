@@ -55,7 +55,10 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles, colo
             if command == 'START':
                 running = True
             elif command == 'QUIT':
-                finished = True
+                if not obj.running_simulation:
+                    finished = True
+                else:
+                    pass
             elif command == 'PAUSE':
                 if running:
                     running = False
