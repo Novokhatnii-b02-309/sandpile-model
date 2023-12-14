@@ -36,21 +36,21 @@ class Simulation(Properties):
 
                     pygame.display.update()
 
-            # создаём массив, в который будем записывать состояние после рассыпания;
-            # нужен для симметричного процесса отрисоки
-            nextsandpiles = np.zeros((self._height, self._width), dtype=np.uint32)
+                # создаём массив, в который будем записывать состояние после рассыпания;
+                # нужен для симметричного процесса отрисоки
+                nextsandpiles = np.zeros((self._height, self._width), dtype=np.uint32)
 
-            toppled = False
-            for i in range(self._height):
-                for j in range(self._width):
-                    num = self._sandpiles[i][j]
-                    if num < n:
-                        nextsandpiles[i][j] += num
-                    else:
-                        set_topple_function(nextsandpiles, i, j, num, self._how_topple, self._width, self._height)
-                        toppled = True
+                toppled = False
+                for i in range(self._height):
+                    for j in range(self._width):
+                        num = self._sandpiles[i][j]
+                        if num < n:
+                            nextsandpiles[i][j] += num
+                        else:
+                            set_topple_function(nextsandpiles, i, j, num, self._how_topple, self._width, self._height)
+                            toppled = True
 
-            self._sandpiles = nextsandpiles
+                self._sandpiles = nextsandpiles
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
