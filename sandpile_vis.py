@@ -34,7 +34,6 @@ class MainWindow:
 
         settings_menu = Menu(m, tearoff=0)
         m.add_cascade(label='Настройки', menu=settings_menu)
-        settings_menu.add_command(label='Размер поля', command=self.size_options)
 
         m.add_command(label='Помощь', command=self.help)
 
@@ -231,29 +230,6 @@ class MainWindow:
             self.start_simulation(control_queue)
         elif command == 'QUIT' and self.running_simulation:
             self.end_simulation()
-
-    def size_options(self):
-        """Настройки размеров для симуляции"""
-        win_options = Toplevel()
-        win_options.resizable(width=False, height=False)
-        win_options.title('Настройки размеров')
-
-        def def_size():
-            value = entry.get()
-            value = value.split(', ')
-            value = list(map(int, value))
-            self.simulation_prop.change_size(value[0], value[1])
-
-        var = StringVar()
-        entry = Entry(win_options, width=30, font='Ubuntu, 12', bd=3, relief=SUNKEN, textvariable=var)
-
-        label = Label(win_options, text='Введите размер поля в виде ***, ***')
-
-        button = Button(win_options, text="Настроить размер", command=def_size)
-
-        entry.pack()
-        label.pack()
-        button.pack()
 
     def about(self):
         """Вывод информации о программе в отдельном окне"""
