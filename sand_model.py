@@ -6,10 +6,15 @@ from sandpile_constants import *
 
 
 class Simulation(Properties):
-    def __init__(self, properties, control_queue, obj):
+    """Симуляция и её методы"""
+    def __init__(self, properties):
+        """Копирование атрибутов properties"""
         vars_properties = vars(properties)
         for key, value in vars_properties.items():
             setattr(self, key, value)
+
+    def run(self, control_queue, obj):
+        """Запуск симуляции"""
 
         screen = pygame.display.set_mode((self._width, self._height), pygame.SCALED | pygame.RESIZABLE)
 

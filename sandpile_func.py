@@ -33,6 +33,9 @@ class Properties:
         # show - boolean
         self._show = show
 
+    def get_sandpiles(self):
+        return self._sandpiles
+
 
 def sandpiles_to_np(sandpiles, width, height):
     """

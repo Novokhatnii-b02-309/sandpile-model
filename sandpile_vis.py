@@ -78,8 +78,7 @@ class MainWindow:
         label_colors = Label(frame_left[6], text='Цвета:', bg='white')
 
         # Виджеты текста справа
-        # label_buttons = Label(frame_right[0], text='Симуляция', bg='white')
-        label_picture = Label(frame_right[1], text='Здесь должна быть картинка', bg='white')
+        label_picture = Label(frame_right[1], text='Сохранение текущего положения песчинок', bg='white')
         label_output = Label(frame_right[3], text='Поле вывода', bg='white')
 
         # Поля ввода длины, ширины и начального положения песчинок
@@ -209,7 +208,8 @@ class MainWindow:
             self.win.update()
             self.read_vars()
             self.running_simulation = True
-            pygame_thread = Thread(target=sand_model.Simulation, args=(self.simulation_prop, control_queue, self))
+            self.simulation = sand_model.Simulation(self.simulation_prop)
+            pygame_thread = Thread(target=self.simulation.run, args=(control_queue, self))
             pygame_thread.start()
         except:
             self.show_error()
@@ -221,7 +221,8 @@ class MainWindow:
         self.running_simulation = False
 
     def save_pic(self):
-        pass
+        sandpiles = self.simulation.get_sandpiles()
+        print(sandpiles)
         # FIXME
 
     def send_command(self, command, control_queue):
@@ -230,6 +231,8 @@ class MainWindow:
             self.start_simulation(control_queue)
         elif command == 'QUIT' and self.running_simulation:
             self.end_simulation()
+        elif command == 'SAVEFIG' and self.running_simulation:
+            self.save_pic()
 
     def about(self):
         """Вывод информации о программе в отдельном окне"""
