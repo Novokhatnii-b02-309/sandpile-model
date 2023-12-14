@@ -11,14 +11,14 @@ class Simulation(Properties):
         for key, value in vars_properties.items():
             setattr(self, key, value)
 
-        screen = pygame.display.set_mode((self.width, self.height), pygame.SCALED | pygame.RESIZABLE)
+        screen = pygame.display.set_mode((self._width, self._height), pygame.SCALED | pygame.RESIZABLE)
 
         finished = False
         running = True
 
-        if self.how_topple == 1:
+        if self._how_topple == 1:
             n = 4  # количество песчинок, при котором происходит обвал
-        elif self.how_topple == 2:
+        elif self._how_topple == 2:
             n = 8
 
         screen.fill(WHITE)
@@ -26,33 +26,33 @@ class Simulation(Properties):
 
         while not finished:
             if running:
-                if self.show or not toppled:
-                    draw(screen, self.sandpiles, self.width, self.height, self.how_topple, self.colors)
+                if self._show or not toppled:
+                    draw(screen, self._sandpiles, self._width, self._height, self._how_topple, self._colors)
 
                     pygame.display.update()
 
             # создаём массив, в который будем записывать состояние после рассыпания;
             # нужен для симметричного процесса отрисоки
-            nextsandpiles = np.zeros((self.height, self.width), dtype=np.uint32)
+            nextsandpiles = np.zeros((self._height, self._width), dtype=np.uint32)
 
             toppled = False
-            for i in range(self.height):
-                for j in range(self.width):
-                    num = self.sandpiles[i][j]
+            for i in range(self._height):
+                for j in range(self._width):
+                    num = self._sandpiles[i][j]
                     if num < n:
                         nextsandpiles[i][j] += num
                     else:
-                        set_topple_function(nextsandpiles, i, j, num, self.how_topple, self.width, self.height)
+                        set_topple_function(nextsandpiles, i, j, num, self._how_topple, self._width, self._height)
                         toppled = True
 
-            self.sandpiles = nextsandpiles
+            self._sandpiles = nextsandpiles
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     finished = True
                 if event.type == pygame.MOUSEBUTTONUP:
                     x, y = pygame.mouse.get_pos()
-                    put_sand(self.sandpiles, x, y, SANDPILES_PUT)
+                    put_sand(self._sandpiles, x, y, SANDPILES_PUT)
 
             try:
                 command = control_queue.get(block=False)
