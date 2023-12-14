@@ -10,10 +10,10 @@ import sandpile_func
 
 
 class MainWindow:
-    '''Основное окно и его методы'''
+    """Основное окно и его методы"""
     def __init__(self, win):
         self.win = win
-        '''Инициализация основного окна программы'''
+        """Инициализация основного окна программы"""
         self.win_width = 900
         self.win_height = 640
 
@@ -82,8 +82,6 @@ class MainWindow:
         # label_buttons = Label(frame_right[0], text='Симуляция', bg='white')
         label_picture = Label(frame_right[1], text='Здесь должна быть картинка', bg='white')
         label_output = Label(frame_right[3], text='Поле вывода', bg='white')
-        # separator = ttk.Separator(win, orient='horizontal')
-        # separator.pack(side='left', fill='x')
 
         # Поля ввода длины, ширины и начального положения песчинок
         self.width_entry = Entry(frame_left[1], width=30, font='Ubuntu, 12', bd=3)
@@ -110,7 +108,8 @@ class MainWindow:
         # Выбор цветов
         self.color_var = StringVar()
         self.color_var.set('colorful')
-        btn_colorful = Radiobutton(frame_left[6], text='Разноцветный', variable=self.color_var, value='colorful', bg='white')
+        btn_colorful = Radiobutton(frame_left[6], text='Разноцветный',
+                                   variable=self.color_var, value='colorful', bg='white')
         btn_red = Radiobutton(frame_left[6], text='Красный', variable=self.color_var, value='red', bg='white')
         btn_green = Radiobutton(frame_left[6], text='Зелёный', variable=self.color_var, value='green', bg='white')
         btn_blue = Radiobutton(frame_left[6], text='Синий', variable=self.color_var, value='blue', bg='white')
@@ -176,7 +175,7 @@ class MainWindow:
         win.mainloop()
 
     def main_win_frame(self, win, x, y, width, height):
-        '''Создаёт ячейку для виджета в главном окне'''
+        """Создаёт ячейку для виджета в главном окне"""
         frame = Frame(win, bg='white', relief=SOLID, highlightbackground='gray', highlightthickness=1,
                       width=width * self.win_width, height=height * self.win_height)
         frame.grid_propagate(False)
@@ -184,7 +183,7 @@ class MainWindow:
         return frame
 
     def read_vars(self):
-        '''Данная функция считывает переменные из строк и кнопок и устанавливает параметры симуляции'''
+        """Данная функция считывает переменные из строк и кнопок и устанавливает параметры симуляции"""
         self.simulation_prop.change_topple(self.type_var.get())
 
         sandpiles = self.sandpiles_entry.get(1.0, END)
@@ -212,8 +211,8 @@ class MainWindow:
             self.read_vars()
             self.running_simulation = True
             pygame_thread = Thread(target=sand_model.simulation, args=(self.simulation_prop.width, self.simulation_prop.height,
-                                   self.simulation_prop.how_topple, self.simulation_prop.sandpiles, self.simulation_prop.colors,
-                                   self.simulation_prop.show, control_queue, self))
+                                   self.simulation_prop.how_topple, self.simulation_prop.sandpiles,
+                                   self.simulation_prop.colors, self.simulation_prop.show, control_queue, self))
             pygame_thread.start()
         except:
             self.show_error()
@@ -236,7 +235,7 @@ class MainWindow:
             self.end_simulation()
 
     def size_options(self):
-        '''Настройки размеров для симуляции'''
+        """Настройки размеров для симуляции"""
         win_options = Toplevel()
         win_options.resizable(width=False, height=False)
         win_options.title('Настройки размеров')
@@ -259,7 +258,7 @@ class MainWindow:
         button.pack()
 
     def about(self):
-        '''Вывод информации о программе в отдельном окне'''
+        """Вывод информации о программе в отдельном окне"""
         win_about = Toplevel()
         win_about.resizable(width=False, height=False)
         win_about.title('О программе')
@@ -271,7 +270,7 @@ class MainWindow:
         label.pack()
 
     def help(self):
-        '''Вывод помощи в отдельном окне'''
+        """Вывод помощи в отдельном окне"""
         win_help = Toplevel()
         win_help.resizable(width=False, height=False)
         win_help.title('Помощь')

@@ -4,9 +4,9 @@ import csv
 
 
 class Properties:
-    '''
+    """
     Класс для хранения информации об окне симуляции
-    '''
+    """
 
     def __init__(self):
         self.width = WIDTH
@@ -35,11 +35,11 @@ class Properties:
 
 
 def sandpiles_to_np(sandpiles, width, height):
-    '''
+    """
     Переводит поле текста в np.array - поле размера width x height с песчинками
     На вход берёт поле текста с песчинками, введёнными в формате ('x','y','количество песчинок в клетке')
     возвращает поле np.array с песчинками
-    '''
+    """
 
     sandpiles = sandpiles.split('\n')
     for i in range(len(sandpiles)-1, -1, -1):
@@ -56,8 +56,8 @@ def sandpiles_to_np(sandpiles, width, height):
 
 
 def csv_to_np(csv_name):
-    '''На вход берёт название csv файла в виде /<название файла>
-    на выход выдаёт массив numpy, ширину и высоту поля (массива)'''
+    """На вход берёт название csv файла в виде /<название файла>
+    на выход выдаёт массив numpy, ширину и высоту поля (массива)"""
     csv_name = csv_name.replace('\n', '')  # Почему-то в конце текста всегда есть "\n"
     csv_name = 'csv_files/'+csv_name[1::]
     with open(csv_name) as fp:
@@ -65,11 +65,11 @@ def csv_to_np(csv_name):
         sandpiles = [list(map(int, row)) for row in reader]
         height = len(sandpiles)
         width = len(sandpiles[0])
-        '''
+        """
         for i in range(height):
             if len(sandpiles[i]) != width:
                 return -1
-        '''
+        """
 
         new_sandpiles = np.zeros((height, width), dtype=np.uint32)
         for i in range(height):
@@ -80,9 +80,9 @@ def csv_to_np(csv_name):
 
 
 def color(cell, value, colors):
-    '''
+    """
     В зависимости от количесива песчинок возвращает цвет клетки
-    '''
+    """
 
     if cell == 0:
         return WHITE
@@ -102,9 +102,9 @@ def color(cell, value, colors):
 
 
 def draw(screen, sandpiles, width, height, value, colors):
-    '''
+    """
     Последовательная отрисовка массива с песчинками
-    '''
+    """
 
     for i in range(height):
         for j in range(width):
@@ -112,9 +112,9 @@ def draw(screen, sandpiles, width, height, value, colors):
 
 
 def topple(sandpiles, i, j, num, width, height):
-    '''
+    """
     Рассыпание песчинок по классическим правилам
-    '''
+    """
 
     sandpiles[i][j] += num - 4
     if j - 1 >= 0:
@@ -129,9 +129,9 @@ def topple(sandpiles, i, j, num, width, height):
 
 
 def topple_neumann(sandpiles, i, j, num, width, height):
-    '''
+    """
     Рассыпание песчинок по окрестности фон Неймана
-    '''
+    """
 
     sandpiles[i][j] += num - 8
     for s in range(-1, 2):
@@ -145,9 +145,9 @@ def topple_neumann(sandpiles, i, j, num, width, height):
 
 
 def set_topple_function(sandpiles, i, j, num, value, width, height):
-    '''
+    """
     По значению value определяет какой тип рассыпания должен быть в симуляции
-    '''
+    """
 
     if value == 1:
         return topple(sandpiles, i, j, num, width, height)
@@ -156,9 +156,9 @@ def set_topple_function(sandpiles, i, j, num, value, width, height):
 
 
 def put_sand(sandpiles, x, y, amount):
-    '''
+    """
     Добавляет в клетку (x, y) amount песчинок
-    '''
+    """
 
     sandpiles[y][x] += amount
     return sandpiles

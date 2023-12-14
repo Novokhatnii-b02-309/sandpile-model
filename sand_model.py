@@ -1,5 +1,4 @@
 import pygame
-import numpy as np
 import queue
 
 from sandpile_func import *
@@ -13,9 +12,9 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles, colo
     running = True
 
     if topple_type == 1:
-        N = 4  # количество песчинок, при котором происходит обвал
+        n = 4  # количество песчинок, при котором происходит обвал
     elif topple_type == 2:
-        N = 8
+        n = 8
 
     screen.fill(WHITE)
     toppled = False
@@ -35,7 +34,7 @@ def simulation(simulation_width, simulation_height, topple_type, sandpiles, colo
         for i in range(simulation_height):
             for j in range(simulation_width):
                 num = sandpiles[i][j]
-                if num < N:
+                if num < n:
                     nextsandpiles[i][j] += num
                 else:
                     set_topple_function(nextsandpiles, i, j, num, topple_type, simulation_width, simulation_height)
