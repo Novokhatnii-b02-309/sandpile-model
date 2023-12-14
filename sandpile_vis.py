@@ -78,8 +78,13 @@ class MainWindow:
         label_colors = Label(frame_left[6], text='Цвета:', bg='white')
 
         # Виджеты текста справа
-        label_picture = Label(frame_right[1], text='Сохранение текущего положения песчинок', bg='white')
-        label_output = Label(frame_right[3], text='Поле вывода', bg='white')
+        label_save_pic = Label(frame_right[1], text='Сохранение текущего положения песчинок',
+                              bg='white', font=('TkHeadingFont', 15))
+        label_saved_csv = Label(frame_right[1], text='Введите название сохраняемого файла', bg='white')
+        label_output = Label(frame_right[3], text='Поле вывода', bg='white', font=('TkHeadingFont', 15))
+
+        # Поле ввода названия сохраняемого csv файла
+        self.saved_csv_entry = Entry(frame_right[1], width=30, font='Ubuntu, 12', bd=3)
 
         # Поля ввода длины, ширины и начального положения песчинок
         self.width_entry = Entry(frame_left[1], width=30, font='Ubuntu, 12', bd=3)
@@ -141,7 +146,11 @@ class MainWindow:
         label_show.pack()
         label_colors.pack()
 
-        label_picture.pack()
+        label_save_pic.pack()
+        label_saved_csv.pack(padx=3, pady=3)
+
+        self.saved_csv_entry.pack(padx=5, pady=5)
+
         label_output.pack()
 
         self.width_entry.pack()
@@ -222,8 +231,8 @@ class MainWindow:
 
     def save_pic(self):
         sandpiles = self.simulation.get_sandpiles()
-        print(sandpiles)
-        # FIXME
+        csv_name = self.saved_csv_entry.get()
+        sandpile_func.save_csv(sandpiles, csv_name)
 
     def send_command(self, command, control_queue):
         control_queue.put(command)

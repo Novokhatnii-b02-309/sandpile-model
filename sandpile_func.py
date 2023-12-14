@@ -82,6 +82,13 @@ def csv_to_np(csv_name):
         return new_sandpiles, width, height
 
 
+def save_csv(sandpiles, csv_name):
+    """Принимает массив numpy, сохраняет csv файл под названием name"""
+    sandpiles = list(sandpiles)
+    with open('csv_files/'+csv_name, 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(sandpiles)
+
 def color(cell, value, colors):
     """
     В зависимости от количесива песчинок возвращает цвет клетки
