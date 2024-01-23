@@ -96,6 +96,13 @@ class MainWindow:
         self.sandpiles_entry.insert(1.0, str(WIDTH // 2) + ',' + str(HEIGHT // 2) + ',' + str(SANDPILES))
         scroll = ttk.Scrollbar(frame_left[3], orient="vertical", command=self.sandpiles_entry.yview)
 
+        # Выбор нейтральный элемент или нет
+        self.neutral_var = BooleanVar()
+        self.neutral_var.set(False)
+        btn_neutral = Checkbutton(frame_left[3], text="Режим нейтрального элемента",
+                 variable=self.neutral_var,
+                 onvalue=True, offvalue=False, bg='white')
+
         # Выбор типа разделения
         self.type_var = IntVar()
         self.type_var.set(1)
@@ -156,10 +163,12 @@ class MainWindow:
         self.width_entry.pack()
         self.height_entry.pack()
 
-        self.sandpiles_entry.pack(side=LEFT, padx=10)
-        scroll.pack(side=LEFT, fill=Y)
+        self.sandpiles_entry.place(relx=0.05, rely=0.1, relwidth=0.7, relheight=0.6)
+        scroll.place(relx=0.75, rely=0.1, relheight=0.6)
 
         self.sandpiles_entry.config(yscrollcommand=scroll.set)
+
+        btn_neutral.place(relx=0.05, rely=0.7, relwidth=0.7, relheight=0.3)
 
         btn_div_4.place(relx=0.2, rely=0.3)
         btn_div_8.place(relx=0.55, rely=0.3)
@@ -193,23 +202,30 @@ class MainWindow:
         """Данная функция считывает переменные из строк и кнопок и устанавливает параметры симуляции"""
         self.simulation_prop.change_topple(self.type_var.get())
 
-        sandpiles = self.sandpiles_entry.get(1.0, END)
+        self.simulation_prop.change_neutral_element(self.neutral_var.get())
+        if not self.neutral_var.get():
+            sandpiles = self.sandpiles_entry.get(1.0, END)
 
-        # выбираем набор песчинок, ширину и высоту или первым (csv файл, ширина и высота по нему), или вторым способом
-        # (каждая клетка вводится по отдельности, ширина и высота отдельно)
-        if sandpiles[0] == '/':
-            new_sandpiles, width, height = sandpile_func.csv_to_np(sandpiles)
+            # выбираем набор песчинок, ширину и высоту или первым (csv файл, ширина и высота по нему), или вторым способом
+            # (каждая клетка вводится по отдельности, ширина и высота отдельно)
+            if sandpiles[0] == '/':
+                new_sandpiles, width, height = sandpile_func.csv_to_np(sandpiles)
+            else:
+                width = int(self.width_entry.get())
+                height = int(self.height_entry.get())
+                new_sandpiles = sandpile_func.sandpiles_to_np(sandpiles, width, height)
+
+            self.simulation_prop.change_sandpiles(new_sandpiles)
+            self.simulation_prop.change_size(width, height)
         else:
             width = int(self.width_entry.get())
             height = int(self.height_entry.get())
-            new_sandpiles = sandpile_func.sandpiles_to_np(sandpiles, width, height)
-
-        self.simulation_prop.change_sandpiles(new_sandpiles)
-        self.simulation_prop.change_size(width, height)
+            self.simulation_prop.change_size(width, height)
 
         self.simulation_prop.change_colors(self.type_var.get(), self.color_var.get())
 
         self.simulation_prop.change_show(self.show_var.get())
+
 
     def start_simulation(self, control_queue):
         try:
@@ -299,6 +315,10 @@ class MainWindow:
         Сохраняет положение песчинок в текущей симуляции в виде csv файла.
         Пример ввода названия сохраняемого файла:
         abc.csv
+        
+        Режим нейтрального элемента:
+        Создаёт нейтральный элемент для заданного размера поля по известному алгоритму 
+        Внимание! Работает корректно только для 4-разделения
         '''
         label = Label(win_help, bg="white", fg='black', text=help_text)
         label.pack()

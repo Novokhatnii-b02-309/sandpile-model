@@ -9,32 +9,36 @@ class Properties:
     """
 
     def __init__(self):
-        self._width = WIDTH
-        self._height = HEIGHT
-        self._how_topple = 1  # 1 - для клссичсекого рассыпания, 2 - для рассыпания по фон Нейману
-        self._sandpiles = np.zeros((self._height, self._width), dtype=np.uint32)
-        self._colors = COLORFUL_CLAS
-        self._show = True
+        self.width = WIDTH
+        self.height = HEIGHT
+        self.how_topple = 1  # 1 - для клссичсекого рассыпания, 2 - для рассыпания по фон Нейману
+        self.sandpiles = np.zeros((self.height, self.width), dtype=np.uint32)
+        self.colors = COLORFUL_CLAS
+        self.show = True
+        self.neutral_element_mode = False
 
     def change_size(self, new_width, new_height):
-        self._width = new_width
-        self._height = new_height
+        self.width = new_width
+        self.height = new_height
 
     def change_topple(self, value):
-        self._how_topple = value
+        self.how_topple = value
 
     def change_sandpiles(self, new_sandpiles):
-        self._sandpiles = new_sandpiles
+        self.sandpiles = new_sandpiles
 
     def change_colors(self, value, new_color):
-        self._colors = COLOR_TYPES[value][new_color]
+        self.colors = COLOR_TYPES[value][new_color]
 
     def change_show(self, show):
         # show - boolean
-        self._show = show
+        self.show = show
 
     def get_sandpiles(self):
-        return self._sandpiles
+        return self.sandpiles
+
+    def change_neutral_element(self, neutral_element_mode):
+        self.neutral_element_mode = neutral_element_mode
 
 
 def sandpiles_to_np(sandpiles, width, height):
